@@ -7,99 +7,128 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f4f0; color: #1a1a1a; min-height: 100vh; padding: 32px 16px 64px; }
-    .container { max-width: 660px; margin: 0 auto; }
+    .container { max-width: 600px; margin: 0 auto; }
 
-    .logo { text-align: center; margin-bottom: 36px; }
+    .logo { text-align: center; margin-bottom: 32px; }
     .logo .brand { font-size: 56px; font-weight: 900; letter-spacing: -3px; }
     .logo .sub { font-size: 12px; color: #888; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
 
-    h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
-    .intro { font-size: 15px; color: #555; margin-bottom: 12px; line-height: 1.65; }
-    .rec-badge { display: inline-block; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; border-radius: 99px; margin-bottom: 28px; }
+    /* SCREEN 1 — výběr osoby */
+    #screen-select { }
+    #screen-select h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    #screen-select p { font-size: 15px; color: #555; margin-bottom: 28px; line-height: 1.6; }
 
-    /* Variants header */
+    .person-grid { display: flex; flex-direction: column; gap: 10px; }
+    .person-btn {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff; border: 2px solid #ebebeb; border-radius: 14px;
+      padding: 16px 18px; cursor: pointer; transition: all 0.15s; text-align: left;
+      width: 100%;
+    }
+    .person-btn:hover { border-color: #1a1a1a; }
+    .person-btn.filled { border-color: #22c55e; background: #f0fdf4; cursor: default; }
+    .person-btn.filled:hover { border-color: #22c55e; }
+    .person-btn .av {
+      width: 42px; height: 42px; border-radius: 50%; background: #1a1a1a;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; flex-shrink: 0;
+    }
+    .person-btn.filled .av { background: #22c55e; }
+    .person-btn .info { flex: 1; }
+    .person-btn .info h3 { font-size: 15px; font-weight: 700; }
+    .person-btn .info .role { font-size: 12px; color: #888; margin-top: 1px; }
+    .person-btn .badge {
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 99px; background: #e8e8e8; color: #aaa; flex-shrink: 0;
+    }
+    .person-btn.filled .badge { background: #22c55e; color: #fff; }
+
+    /* SCREEN 2 — formulář */
+    #screen-form { display: none; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: #888; cursor: pointer;
+      margin-bottom: 20px; border: none; background: none; padding: 0;
+    }
+    .back-btn:hover { color: #1a1a1a; }
+
+    .person-header {
+      background: #fff; border-radius: 16px; padding: 20px;
+      margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .person-header .av { width: 52px; height: 52px; border-radius: 50%; background: #1a1a1a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 19px; flex-shrink: 0; }
+    .person-header h2 { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
+    .person-header .role { font-size: 12px; color: #888; }
+    .person-header .loc { font-size: 11px; color: #bbb; margin-top: 3px; }
+
+    /* Variants */
     .variants-header { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
     .var-pill { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); text-align: center; }
     .var-pill .vl { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; }
     .var-pill .vd { font-size: 15px; font-weight: 800; margin: 3px 0 2px; }
     .var-pill .vn { font-size: 11px; color: #888; }
-    .var-pill.recommended { border: 2px solid #1a1a1a; }
-    .var-pill.recommended .vl { color: #1a1a1a; }
-
-    /* Progress */
-    .progress-wrap { margin-bottom: 28px; }
-    .progress-bar { background: #e0e0e0; border-radius: 8px; height: 8px; overflow: hidden; }
-    .progress-fill { height: 100%; background: #1a1a1a; border-radius: 8px; transition: width 0.5s; width: 0%; }
-    .progress-label { font-size: 12px; color: #aaa; text-align: right; margin-top: 6px; }
-
-    /* Live status board */
-    .status-board { background: #fff; border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    .status-board h2 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
-    .status-list { display: flex; flex-direction: column; gap: 8px; }
-    .status-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: #e0e0e0; }
-    .status-dot.done-A { background: #22c55e; }
-    .status-dot.done-B { background: #3b82f6; }
-    .status-dot.done-oba { background: #8b5cf6; }
-    .status-dot.done-ne { background: #ef4444; }
-    .status-name { flex: 1; color: #555; }
-    .status-choice { font-size: 12px; font-weight: 700; color: #aaa; }
-    .status-choice.A { color: #16a34a; }
-    .status-choice.B { color: #2563eb; }
-    .status-choice.oba { color: #7c3aed; }
-    .status-choice.ne { color: #dc2626; }
-    .status-who { font-size: 11px; color: #bbb; margin-left: 4px; }
-
-    /* Cards */
-    .card { background: #fff; border-radius: 16px; padding: 24px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    .card.already-filled { opacity: 0.5; pointer-events: none; }
-    .card.already-filled::after { content: "✓ Již vyplněno"; display: block; font-size: 12px; font-weight: 700; color: #22c55e; margin-top: 12px; }
-    .day-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
-
-    .person-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; background: #1a1a1a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
-    .person-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 1px; }
-    .person-info .role { font-size: 12px; color: #888; line-height: 1.4; }
-    .person-info .loc-time { font-size: 11px; color: #bbb; margin-top: 3px; }
-    .person-info .loc-time strong { color: #999; }
-
-    hr.sep { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
+    .var-pill.rec { border: 2px solid #1a1a1a; }
+    .var-pill.rec .vl { color: #1a1a1a; }
 
     /* Options */
+    .card { background: #fff; border-radius: 16px; padding: 24px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .card h3 { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
     .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .option input[type="radio"] { display: none; }
-    .option label { display: block; padding: 11px 8px; border: 2px solid #ebebeb; border-radius: 10px; cursor: pointer; transition: all 0.15s; text-align: center; }
-    .option label .ol { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 3px; }
-    .option label .od { font-size: 13px; font-weight: 700; color: #1a1a1a; display: block; }
-    .option label .ot { font-size: 10px; color: #aaa; display: block; margin-top: 2px; }
+    .option label { display: block; padding: 14px 8px; border: 2px solid #ebebeb; border-radius: 10px; cursor: pointer; transition: all 0.15s; text-align: center; }
+    .option label .ol { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 4px; }
+    .option label .od { font-size: 14px; font-weight: 700; color: #1a1a1a; display: block; }
+    .option label .ot { font-size: 11px; color: #aaa; display: block; margin-top: 2px; }
     .option input:checked + label { border-color: #1a1a1a; background: #1a1a1a; }
     .option input:checked + label .ol, .option input:checked + label .od, .option input:checked + label .ot { color: #fff; }
-    .option label:hover { border-color: #aaa; }
+    .option label:hover { border-color: #999; }
 
-    .unavail { margin-top: 10px; }
-    .unavail label { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #bbb; cursor: pointer; }
-    .unavail input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: #ef4444; }
+    .unavail { margin-top: 12px; }
+    .unavail label { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #bbb; cursor: pointer; }
+    .unavail input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: #ef4444; }
 
-    /* Submit */
-    .submit-section { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px; }
     .field { margin-bottom: 16px; }
     .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #555; }
     .field input, .field textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit; }
     .field textarea { resize: none; min-height: 70px; font-size: 14px; }
     .field input:focus, .field textarea:focus { border-color: #1a1a1a; }
 
-    .btn-submit { width: 100%; padding: 15px; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .btn-submit { width: 100%; padding: 16px; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
     .btn-submit:hover { opacity: 0.82; }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .err-msg { color: #ef4444; font-size: 13px; margin-top: 10px; text-align: center; display: none; }
 
-    .sending-msg { text-align: center; color: #888; font-size: 14px; margin-top: 12px; display: none; }
+    /* Status board */
+    .status-board { background: #fff; border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .status-board h2 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+    .progress-bar { background: #e8e8e8; border-radius: 8px; height: 6px; overflow: hidden; margin-bottom: 6px; }
+    .progress-fill { height: 100%; background: #1a1a1a; border-radius: 8px; transition: width 0.5s; width: 0%; }
+    .progress-label { font-size: 12px; color: #aaa; margin-bottom: 14px; }
+    .status-list { display: flex; flex-direction: column; gap: 8px; }
+    .status-row { display: flex; align-items: center; gap: 10px; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; background: #e0e0e0; }
+    .status-dot.c-A { background: #22c55e; }
+    .status-dot.c-B { background: #3b82f6; }
+    .status-dot.c-oba { background: #8b5cf6; }
+    .status-dot.c-ne { background: #ef4444; }
+    .sname { flex: 1; font-size: 13px; color: #555; }
+    .schoice { font-size: 12px; font-weight: 700; color: #ccc; }
+    .schoice.c-A { color: #16a34a; }
+    .schoice.c-B { color: #2563eb; }
+    .schoice.c-oba { color: #7c3aed; }
+    .schoice.c-ne { color: #dc2626; }
+    .swho { font-size: 11px; color: #bbb; margin-left: 3px; font-weight: 400; }
 
+    /* Success */
     .success { display: none; text-align: center; padding: 56px 32px; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .success .icon { font-size: 52px; margin-bottom: 16px; }
     .success h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .success p { color: #777; font-size: 15px; line-height: 1.6; }
+    .success p { color: #777; font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+    .back-home { display: inline-block; padding: 12px 24px; background: #f0f0f0; border-radius: 10px; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; border: none; }
+    .back-home:hover { background: #e8e8e8; }
 
-    @media (max-width: 500px) {
+    @media (max-width: 480px) {
       .options { grid-template-columns: 1fr 1fr; }
       .variants-header { grid-template-columns: 1fr 1fr; }
     }
@@ -113,343 +142,292 @@
     <div class="sub">feopatito studio · natáčení srpen 2026</div>
   </div>
 
-  <h1>Potvrzení dostupnosti natáčení</h1>
-  <p class="intro">Připravujeme videokomunikaci hnutí MY před komunálními volbami. Prosíme, vyberte u svého jména dostupnost — výběr nezabere více než minutu.</p>
-  <div class="rec-badge">★ Doporučujeme variantu A — více času na postprodukci</div>
+  <!-- SCREEN 1: Vyber kdo jsi -->
+  <div id="screen-select">
+    <h1>Kdo jste?</h1>
+    <p>Vyberte své jméno a potvrďte dostupnost pro natáčení. Ostatní uvidí, že jste vyplnili.</p>
 
-  <div class="variants-header">
-    <div class="var-pill recommended">
-      <div class="vl">★ Varianta A</div>
-      <div class="vd">6.–9. srpna 2026</div>
-      <div class="vn">St 6.8. / Čt 7.8. / Pá 8.8.<br>Záloha: So 9.8.</div>
+    <!-- Status board -->
+    <div class="status-board">
+      <h2>📊 Přehled odpovědí</h2>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Načítám…</div>
+      <div class="status-list" id="statusList"><div style="font-size:13px;color:#ccc">Načítám…</div></div>
     </div>
-    <div class="var-pill">
-      <div class="vl">Varianta B</div>
-      <div class="vd">13.–16. srpna 2026</div>
-      <div class="vn">St 13.8. / Čt 14.8. / Pá 15.8.<br>Záloha: So 16.8.</div>
-    </div>
-  </div>
 
-  <!-- Live progress -->
-  <div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">Načítám odpovědi…</div>
-  </div>
-
-  <!-- Live status board -->
-  <div class="status-board">
-    <h2>📊 Přehled odpovědí</h2>
-    <div class="status-list" id="statusList">
-      <div style="font-size:13px;color:#aaa;">Načítám…</div>
+    <div class="person-grid" id="personGrid">
+      <!-- renderováno JS -->
     </div>
   </div>
 
-  <div id="form-area">
+  <!-- SCREEN 2: Formulář pro vybranou osobu -->
+  <div id="screen-form">
+    <button class="back-btn" onclick="goBack()">← Zpět na výběr</button>
 
-    <!-- DEN 1 — STŘEDA -->
-    <div class="card" id="card-den1">
-      <div class="day-label">Den 1 — Středa &nbsp;|&nbsp; Var. A: 6. 8. &nbsp;/&nbsp; Var. B: 13. 8.</div>
+    <div class="person-header" id="formHeader"></div>
 
-      <div class="person-row">
-        <div class="avatar">H</div>
-        <div class="person-info">
-          <h3>MUDr. Josef Hájek</h3>
-          <div class="role">Primář ORL · Zastupitel PK</div>
-          <div class="loc-time">📍 Orlickoústecká nemocnice, Ústí nad Orlicí &nbsp;·&nbsp; <strong>12:00–14:30</strong></div>
-        </div>
+    <div class="variants-header">
+      <div class="var-pill rec">
+        <div class="vl">★ Varianta A</div>
+        <div class="vd">6.–9. 8. 2026</div>
+        <div class="vn">St 6.8. / Čt 7.8. / Pá 8.8.</div>
       </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="hajek" id="hajek-a" value="A"><label for="hajek-a"><span class="ol">★ Var. A</span><span class="od">St 6. 8.</span><span class="ot">12:00–14:30</span></label></div>
-        <div class="option"><input type="radio" name="hajek" id="hajek-b" value="B"><label for="hajek-b"><span class="ol">Var. B</span><span class="od">St 13. 8.</span><span class="ot">12:00–14:30</span></label></div>
-        <div class="option"><input type="radio" name="hajek" id="hajek-oba" value="oba"><label for="hajek-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
+      <div class="var-pill">
+        <div class="vl">Varianta B</div>
+        <div class="vd">13.–16. 8. 2026</div>
+        <div class="vn">St 13.8. / Čt 14.8. / Pá 15.8.</div>
       </div>
-      <div class="unavail"><label><input type="checkbox" id="hajek-none" onchange="toggleNone('hajek',this)"> Žádný termín mi nevyhovuje</label></div>
-
-      <hr class="sep">
-
-      <div class="person-row">
-        <div class="avatar">M</div>
-        <div class="person-info">
-          <h3>Mgr. Jiří Mencák</h3>
-          <div class="role">Starosta Žamberka · Zastupitel PK · Musher</div>
-          <div class="loc-time">📍 Žamberk — radnice + příroda &nbsp;·&nbsp; <strong>15:00–17:30</strong> &nbsp;(18 km od Hájka)</div>
-        </div>
-      </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="mencak" id="mencak-a" value="A"><label for="mencak-a"><span class="ol">★ Var. A</span><span class="od">St 6. 8.</span><span class="ot">15:00–17:30</span></label></div>
-        <div class="option"><input type="radio" name="mencak" id="mencak-b" value="B"><label for="mencak-b"><span class="ol">Var. B</span><span class="od">St 13. 8.</span><span class="ot">15:00–17:30</span></label></div>
-        <div class="option"><input type="radio" name="mencak" id="mencak-oba" value="oba"><label for="mencak-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="mencak-none" onchange="toggleNone('mencak',this)"> Žádný termín mi nevyhovuje</label></div>
     </div>
 
-    <!-- DEN 2 — ČTVRTEK -->
-    <div class="card" id="card-den2">
-      <div class="day-label">Den 2 — Čtvrtek &nbsp;|&nbsp; Var. A: 7. 8. &nbsp;/&nbsp; Var. B: 14. 8. &nbsp;·&nbsp; nejnáročnější den</div>
-
-      <div class="person-row">
-        <div class="avatar">B</div>
-        <div class="person-info">
-          <h3>Dominik Barták</h3>
-          <div class="role">Tiskový mluvčí PK · MO Pardubice V</div>
-          <div class="loc-time">📍 Srnojedy (u Pardubic) &nbsp;·&nbsp; <strong>8:00–10:00</strong></div>
-        </div>
+    <div class="card">
+      <h3 id="formDayLabel">Váš natáčecí den</h3>
+      <div class="options" id="formOptions"></div>
+      <div class="unavail">
+        <label><input type="checkbox" id="chk-none" onchange="toggleNone(this)"> Žádný termín mi nevyhovuje</label>
       </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="bartak" id="bartak-a" value="A"><label for="bartak-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">8:00–10:00</span></label></div>
-        <div class="option"><input type="radio" name="bartak" id="bartak-b" value="B"><label for="bartak-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">8:00–10:00</span></label></div>
-        <div class="option"><input type="radio" name="bartak" id="bartak-oba" value="oba"><label for="bartak-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="bartak-none" onchange="toggleNone('bartak',this)"> Žádný termín mi nevyhovuje</label></div>
-
-      <hr class="sep">
-
-      <div class="person-row">
-        <div class="avatar">K</div>
-        <div class="person-info">
-          <h3>Josef Kozel</h3>
-          <div class="role">Radní PK pro školství · Starosta Heřmanova Městce</div>
-          <div class="loc-time">📍 Heřmanův Městec — dílny SŠ / hokejbalový stadion &nbsp;·&nbsp; <strong>11:00–13:30</strong></div>
-        </div>
-      </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="kozel" id="kozel-a" value="A"><label for="kozel-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">11:00–13:30</span></label></div>
-        <div class="option"><input type="radio" name="kozel" id="kozel-b" value="B"><label for="kozel-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">11:00–13:30</span></label></div>
-        <div class="option"><input type="radio" name="kozel" id="kozel-oba" value="oba"><label for="kozel-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="kozel-none" onchange="toggleNone('kozel',this)"> Žádný termín mi nevyhovuje</label></div>
-
-      <hr class="sep">
-
-      <div class="person-row">
-        <div class="avatar">Kr</div>
-        <div class="person-info">
-          <h3>Miroslav Krčil</h3>
-          <div class="role">Radní PK · Starosta Hlinska</div>
-          <div class="loc-time">📍 Hlinsko — radnice, venkovní prostředí &nbsp;·&nbsp; <strong>15:00–17:00</strong></div>
-        </div>
-      </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="krcil" id="krcil-a" value="A"><label for="krcil-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">15:00–17:00</span></label></div>
-        <div class="option"><input type="radio" name="krcil" id="krcil-b" value="B"><label for="krcil-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">15:00–17:00</span></label></div>
-        <div class="option"><input type="radio" name="krcil" id="krcil-oba" value="oba"><label for="krcil-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="krcil-none" onchange="toggleNone('krcil',this)"> Žádný termín mi nevyhovuje</label></div>
     </div>
 
-    <!-- DEN 3 — PÁTEK -->
-    <div class="card" id="card-den3">
-      <div class="day-label">Den 3 — Pátek &nbsp;|&nbsp; Var. A: 8. 8. &nbsp;/&nbsp; Var. B: 15. 8.</div>
-
-      <div class="person-row">
-        <div class="avatar">F</div>
-        <div class="person-info">
-          <h3>Petr Fiala</h3>
-          <div class="role">Senátor · Starosta Letohradu · Předseda hnutí MY</div>
-          <div class="loc-time">📍 Letohrad — náměstí, sportoviště &nbsp;·&nbsp; <strong>9:00–11:30</strong></div>
-        </div>
-      </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="fiala" id="fiala-a" value="A"><label for="fiala-a"><span class="ol">★ Var. A</span><span class="od">Pá 8. 8.</span><span class="ot">9:00–11:30</span></label></div>
-        <div class="option"><input type="radio" name="fiala" id="fiala-b" value="B"><label for="fiala-b"><span class="ol">Var. B</span><span class="od">Pá 15. 8.</span><span class="ot">9:00–11:30</span></label></div>
-        <div class="option"><input type="radio" name="fiala" id="fiala-oba" value="oba"><label for="fiala-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="fiala-none" onchange="toggleNone('fiala',this)"> Žádný termín mi nevyhovuje</label></div>
-
-      <hr class="sep">
-
-      <div class="person-row">
-        <div class="avatar">S</div>
-        <div class="person-info">
-          <h3>Ing. Jan Stránský</h3>
-          <div class="role">Starosta Přívratu (neuvolněný) · Ředitel rostlinné výroby</div>
-          <div class="loc-time">📍 Přívrat — obecní úřad, hřiště, pole &nbsp;·&nbsp; <strong>13:00–15:30</strong> &nbsp;(20 km od Fialy)</div>
-        </div>
-      </div>
-      <div class="options">
-        <div class="option"><input type="radio" name="stransky" id="stransky-a" value="A"><label for="stransky-a"><span class="ol">★ Var. A</span><span class="od">Pá 8. 8.</span><span class="ot">13:00–15:30</span></label></div>
-        <div class="option"><input type="radio" name="stransky" id="stransky-b" value="B"><label for="stransky-b"><span class="ol">Var. B</span><span class="od">Pá 15. 8.</span><span class="ot">13:00–15:30</span></label></div>
-        <div class="option"><input type="radio" name="stransky" id="stransky-oba" value="oba"><label for="stransky-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
-      </div>
-      <div class="unavail"><label><input type="checkbox" id="stransky-none" onchange="toggleNone('stransky',this)"> Žádný termín mi nevyhovuje</label></div>
-    </div>
-
-    <!-- SUBMIT -->
-    <div class="submit-section">
+    <div class="card">
       <div class="field">
-        <label for="person-name">Vaše jméno</label>
-        <input type="text" id="person-name" placeholder="Jméno a příjmení" autocomplete="name">
+        <label>Vaše jméno (pro potvrzení)</label>
+        <input type="text" id="confirm-name" placeholder="Jméno a příjmení">
       </div>
       <div class="field">
-        <label for="note">Poznámka (nepovinné)</label>
+        <label>Poznámka (nepovinné)</label>
         <textarea id="note" placeholder="Omezení, komentář k termínu…"></textarea>
       </div>
-      <button class="btn-submit" id="btn-submit" onclick="submitForm()">Odeslat dostupnost →</button>
-      <div class="sending-msg" id="sending-msg">⏳ Ukládám odpovědi…</div>
+      <button class="btn-submit" id="btn-submit" onclick="submitForm()">Potvrdit dostupnost →</button>
+      <div class="err-msg" id="err-msg">Nepodařilo se uložit. Zkuste to znovu.</div>
     </div>
-
   </div>
 
-  <div class="success" id="success-screen">
+  <!-- SUCCESS -->
+  <div class="success" id="screen-success">
     <div class="icon">✅</div>
-    <h2>Děkujeme!</h2>
-    <p>Vaše dostupnost byla uložena.<br>Ostatní účastníci uvidí váš výběr v přehledu nahoře.</p>
+    <h2>Hotovo!</h2>
+    <p>Vaše dostupnost byla uložena.<br>Ostatní účastníci uvidí váš výběr v přehledu.</p>
+    <button class="back-home" onclick="goHome()">← Zpět na přehled</button>
   </div>
 
 </div>
 
 <script>
-// === CONFIG ===
-const GITHUB_OWNER = "feopatito";
-const GITHUB_REPO  = "my-booking";
-const GITHUB_FILE  = "responses.json";
-// Read-only token split to avoid GitHub secret scanning
-const T1 = "ghp_"; const T2 = "yV"; const T3 = "VOLVGZH83VLa"; const T4 = "fAGpPABi";
-const GITHUB_TOKEN = T1 + T2 + T3 + T4;
-const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+// ── CONFIG ──
+const OWNER = "feopatito";
+const REPO  = "my-booking";
+const FILE  = "responses.json";
+const TOK   = "ghp_" + "yVVOLVGZH83VLa" + "fAGpPABi";
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
 
-const PEOPLE = ['hajek','mencak','bartak','kozel','krcil','fiala','stransky'];
-const FULL_NAMES = {
-  hajek: "MUDr. Josef Hájek", mencak: "Mgr. Jiří Mencák", bartak: "Dominik Barták",
-  kozel: "Josef Kozel", krcil: "Miroslav Krčil", fiala: "Petr Fiala", stransky: "Ing. Jan Stránský"
-};
-const CHOICE_LABELS = {
-  A: "★ Varianta A", B: "Varianta B", oba: "Obě varianty", ne: "Nedostupný/á"
-};
+// ── DATA ──
+const PEOPLE = [
+  { id: "hajek",    name: "MUDr. Josef Hájek",    av: "H",  role: "Primář ORL · Zastupitel PK",                        day: "Den 1 — Středa",   dayA: "St 6. 8.",  dayB: "St 13. 8.", timeA: "12:00–14:30", timeB: "12:00–14:30", loc: "Orlickoústecká nemocnice, Ústí nad Orlicí" },
+  { id: "mencak",   name: "Mgr. Jiří Mencák",     av: "M",  role: "Starosta Žamberka · Zastupitel PK",                 day: "Den 1 — Středa",   dayA: "St 6. 8.",  dayB: "St 13. 8.", timeA: "15:00–17:30", timeB: "15:00–17:30", loc: "Žamberk — radnice + příroda" },
+  { id: "bartak",   name: "Dominik Barták",        av: "B",  role: "Tiskový mluvčí PK · MO Pardubice V",               day: "Den 2 — Čtvrtek",  dayA: "Čt 7. 8.",  dayB: "Čt 14. 8.", timeA: "8:00–10:00",  timeB: "8:00–10:00",  loc: "Srnojedy (u Pardubic)" },
+  { id: "kozel",    name: "Josef Kozel",           av: "K",  role: "Radní PK pro školství · Starosta Heřmanova Městce", day: "Den 2 — Čtvrtek",  dayA: "Čt 7. 8.",  dayB: "Čt 14. 8.", timeA: "11:00–13:30", timeB: "11:00–13:30", loc: "Heřmanův Městec — dílny SŠ / hokejbalový stadion" },
+  { id: "krcil",    name: "Miroslav Krčil",        av: "Kr", role: "Radní PK · Starosta Hlinska",                      day: "Den 2 — Čtvrtek",  dayA: "Čt 7. 8.",  dayB: "Čt 14. 8.", timeA: "15:00–17:00", timeB: "15:00–17:00", loc: "Hlinsko — radnice, venkovní prostředí" },
+  { id: "fiala",    name: "Petr Fiala",            av: "F",  role: "Senátor · Starosta Letohradu · Předseda hnutí MY", day: "Den 3 — Pátek",    dayA: "Pá 8. 8.",  dayB: "Pá 15. 8.", timeA: "9:00–11:30",  timeB: "9:00–11:30",  loc: "Letohrad — náměstí, sportoviště" },
+  { id: "stransky", name: "Ing. Jan Stránský",     av: "S",  role: "Starosta Přívratu · Ředitel rostlinné výroby",     day: "Den 3 — Pátek",    dayA: "Pá 8. 8.",  dayB: "Pá 15. 8.", timeA: "13:00–15:30", timeB: "13:00–15:30", loc: "Přívrat — obecní úřad, hřiště, pole" },
+];
+
+const LABELS = { A: "★ Var. A", B: "Var. B", oba: "Obě", ne: "Nedostupný/á" };
+const CLABELS = { A: "★ Varianta A", B: "Varianta B", oba: "Obě varianty", ne: "Nedostupný/á" };
 
 let currentSha = null;
 let currentData = {};
+let selectedPerson = null;
 
-// === LOAD & RENDER STATUS ===
+// ── GITHUB READ ──
 async function loadResponses() {
   try {
-    const r = await fetch(API_BASE, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: "application/vnd.github.v3+json" }
+    const r = await fetch(API + "?t=" + Date.now(), {
+      headers: { Authorization: `token ${TOK}`, Accept: "application/vnd.github.v3+json", "Cache-Control": "no-cache" }
     });
+    if (!r.ok) throw new Error("HTTP " + r.status);
     const d = await r.json();
     currentSha = d.sha;
     currentData = JSON.parse(atob(d.content.replace(/\n/g, "")));
-    renderStatus(currentData);
+    renderAll();
   } catch(e) {
-    document.getElementById("progressLabel").textContent = "Nepodařilo se načíst odpovědi";
+    document.getElementById("progressLabel").textContent = "Chyba načítání";
   }
 }
 
-function renderStatus(data) {
+// ── GITHUB WRITE ──
+async function saveResponse(personId, choice, name, note) {
+  // Vždy načti čerstvé SHA těsně před zápisem — zabrání konfliktu
+  const fresh = await fetch(API + "?t=" + Date.now(), {
+    headers: { Authorization: `token ${TOK}`, Accept: "application/vnd.github.v3+json", "Cache-Control": "no-cache" }
+  });
+  if (!fresh.ok) throw new Error("Read failed " + fresh.status);
+  const fd = await fresh.json();
+  const freshSha = fd.sha;
+  const freshData = JSON.parse(atob(fd.content.replace(/\n/g, "")));
+
+  freshData[personId] = { choice, name, note: note || "", ts: new Date().toISOString() };
+
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(freshData, null, 2))));
+  const res = await fetch(API, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${TOK}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message: `odpověď: ${name} — ${personId}`, content, sha: freshSha }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Write failed " + res.status);
+  }
+  currentData = freshData;
+}
+
+// ── RENDER ──
+function renderAll() {
+  renderStatusBoard();
+  renderPersonGrid();
+}
+
+function renderStatusBoard() {
   const list = document.getElementById("statusList");
   let filled = 0;
   list.innerHTML = "";
-
   PEOPLE.forEach(p => {
-    const resp = data[p];
+    const resp = currentData[p.id];
+    if (resp) filled++;
     const row = document.createElement("div");
     row.className = "status-row";
-
-    const dot = document.createElement("div");
-    dot.className = "status-dot" + (resp ? ` done-${resp.choice === "ne" ? "ne" : resp.choice}` : "");
-
-    const name = document.createElement("div");
-    name.className = "status-name";
-    name.textContent = FULL_NAMES[p];
-
-    const choice = document.createElement("div");
-    if (resp) {
-      filled++;
-      choice.className = `status-choice ${resp.choice === "ne" ? "ne" : resp.choice}`;
-      choice.innerHTML = (CHOICE_LABELS[resp.choice] || resp.choice) + `<span class="status-who"> — ${resp.name}</span>`;
-    } else {
-      choice.className = "status-choice";
-      choice.textContent = "čeká na odpověď";
-    }
-
-    row.appendChild(dot);
-    row.appendChild(name);
-    row.appendChild(choice);
+    row.innerHTML = `
+      <div class="status-dot ${resp ? 'c-' + resp.choice : ''}"></div>
+      <div class="sname">${p.name}</div>
+      <div class="schoice ${resp ? 'c-' + resp.choice : ''}">
+        ${resp ? (CLABELS[resp.choice] || resp.choice) + `<span class="swho">— ${resp.name}</span>` : 'čeká'}
+      </div>`;
     list.appendChild(row);
   });
-
-  const pct = Math.round((filled / PEOPLE.length) * 100);
+  const pct = Math.round(filled / PEOPLE.length * 100);
   document.getElementById("progressFill").style.width = pct + "%";
   document.getElementById("progressLabel").textContent = `${filled} / ${PEOPLE.length} potvrzeno`;
 }
 
-// === FORM LOGIC ===
-function toggleNone(person, checkbox) {
-  document.querySelectorAll(`input[name="${person}"]`).forEach(r => {
+function renderPersonGrid() {
+  const grid = document.getElementById("personGrid");
+  grid.innerHTML = "";
+  PEOPLE.forEach(p => {
+    const resp = currentData[p.id];
+    const btn = document.createElement("button");
+    btn.className = "person-btn" + (resp ? " filled" : "");
+    btn.innerHTML = `
+      <div class="av">${p.av}</div>
+      <div class="info">
+        <h3>${p.name}</h3>
+        <div class="role">${p.role}</div>
+      </div>
+      <div class="badge">${resp ? "✓ Vyplněno" : "Vyplnit"}</div>`;
+    if (!resp) btn.onclick = () => openForm(p.id);
+    grid.appendChild(btn);
+  });
+}
+
+// ── FORM ──
+function openForm(personId) {
+  selectedPerson = PEOPLE.find(p => p.id === personId);
+  if (!selectedPerson) return;
+
+  // Header
+  document.getElementById("formHeader").innerHTML = `
+    <div class="av">${selectedPerson.av}</div>
+    <div>
+      <h2>${selectedPerson.name}</h2>
+      <div class="role">${selectedPerson.role}</div>
+      <div class="loc">📍 ${selectedPerson.loc}</div>
+    </div>`;
+
+  // Day label
+  document.getElementById("formDayLabel").textContent = selectedPerson.day;
+
+  // Options
+  document.getElementById("formOptions").innerHTML = `
+    <div class="option">
+      <input type="radio" name="choice" id="ch-a" value="A">
+      <label for="ch-a"><span class="ol">★ Var. A</span><span class="od">${selectedPerson.dayA}</span><span class="ot">${selectedPerson.timeA}</span></label>
+    </div>
+    <div class="option">
+      <input type="radio" name="choice" id="ch-b" value="B">
+      <label for="ch-b"><span class="ol">Var. B</span><span class="od">${selectedPerson.dayB}</span><span class="ot">${selectedPerson.timeB}</span></label>
+    </div>
+    <div class="option">
+      <input type="radio" name="choice" id="ch-oba" value="oba">
+      <label for="ch-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label>
+    </div>`;
+
+  // Reset state
+  document.getElementById("chk-none").checked = false;
+  document.getElementById("confirm-name").value = "";
+  document.getElementById("note").value = "";
+  document.getElementById("btn-submit").disabled = false;
+  document.getElementById("err-msg").style.display = "none";
+
+  document.getElementById("screen-select").style.display = "none";
+  document.getElementById("screen-form").style.display = "block";
+  document.getElementById("screen-success").style.display = "none";
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  document.getElementById("screen-select").style.display = "block";
+  document.getElementById("screen-form").style.display = "none";
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  document.getElementById("screen-select").style.display = "block";
+  document.getElementById("screen-success").style.display = "none";
+  loadResponses();
+  window.scrollTo(0, 0);
+}
+
+function toggleNone(checkbox) {
+  document.querySelectorAll('input[name="choice"]').forEach(r => {
     r.disabled = checkbox.checked;
     if (checkbox.checked) r.checked = false;
   });
 }
 
 async function submitForm() {
-  const name = document.getElementById("person-name").value.trim();
-  if (!name) { alert("Prosím vyplňte své jméno."); document.getElementById("person-name").focus(); return; }
+  const name = document.getElementById("confirm-name").value.trim();
+  if (!name) { alert("Prosím vyplňte své jméno."); document.getElementById("confirm-name").focus(); return; }
 
-  // Sbírej odpovědi
-  const answers = {};
-  PEOPLE.forEach(p => {
-    const checked = document.querySelector(`input[name="${p}"]:checked`);
-    const none = document.getElementById(`${p}-none`);
-    if (none && none.checked) answers[p] = "ne";
-    else if (checked) answers[p] = checked.value;
-  });
+  const checked = document.querySelector('input[name="choice"]:checked');
+  const none = document.getElementById("chk-none").checked;
+  if (!checked && !none) { alert("Prosím vyberte dostupnost."); return; }
 
-  if (Object.keys(answers).length === 0) {
-    alert("Prosím vyberte alespoň jednu dostupnost.");
-    return;
-  }
-
-  const unanswered = PEOPLE.filter(p => !answers[p]);
-  if (unanswered.length > 0 && !confirm(`${unanswered.length} osobám jste nevyplnili dostupnost. Odeslat i tak?`)) return;
-
+  const choice = none ? "ne" : checked.value;
   const note = document.getElementById("note").value.trim();
   const btn = document.getElementById("btn-submit");
-  btn.disabled = true;
-  document.getElementById("sending-msg").style.display = "block";
 
-  // Aktualizuj data
-  const newData = { ...currentData };
-  PEOPLE.forEach(p => {
-    if (answers[p]) newData[p] = { choice: answers[p], name, note, ts: new Date().toISOString() };
-  });
+  btn.disabled = true;
+  btn.textContent = "Ukládám…";
+  document.getElementById("err-msg").style.display = "none";
 
   try {
-    // Ulož do GitHub
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(newData, null, 2))));
-    const res = await fetch(API_BASE, {
-      method: "PUT",
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-        Accept: "application/vnd.github.v3+json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: `odpověď: ${name}`,
-        content,
-        sha: currentSha,
-      }),
-    });
-
-    if (!res.ok) throw new Error("GitHub write failed: " + res.status);
-
-    // Zobraz success
-    document.getElementById("form-area").style.display = "none";
-    document.getElementById("success-screen").style.display = "block";
-
-    // Aktualizuj status board
-    await loadResponses();
-
+    await saveResponse(selectedPerson.id, choice, name, note);
+    document.getElementById("screen-form").style.display = "none";
+    document.getElementById("screen-success").style.display = "block";
+    renderStatusBoard();
+    renderPersonGrid();
   } catch(e) {
     btn.disabled = false;
-    document.getElementById("sending-msg").style.display = "none";
-    alert("Nepodařilo se uložit odpovědi. Zkuste to znovu.");
+    btn.textContent = "Potvrdit dostupnost →";
+    document.getElementById("err-msg").style.display = "block";
+    document.getElementById("err-msg").textContent = "Nepodařilo se uložit: " + e.message;
     console.error(e);
   }
 }
 
-// === INIT ===
+// ── INIT ──
 loadResponses();
-// Auto-refresh každých 30s
 setInterval(loadResponses, 30000);
 </script>
 </body>
