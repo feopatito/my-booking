@@ -91,9 +91,9 @@ function smtpSend(subject, textBody) {
   if (!SMTP_PASS) return Promise.resolve({ skipped: "no smtp pass" });
 
   return new Promise((resolve, reject) => {
-    const host = "smtp.4every1.cz";
-    const port = 465; // SMTPS (TLS od začátku)
-    const user = "tomas@feopatito.cz";
+    const host = "smtp.gmail.com";
+    const port = 465;
+    const user = "feopatitostudio@gmail.com";
     const to = "tomas@feopatito.cz";
 
     const b64creds = Buffer.from("\0" + user + "\0" + SMTP_PASS).toString("base64");
