@@ -1,5 +1,4 @@
 const https = require("https");
-const nodemailer = require("nodemailer");
 
 const OWNER = "feopatito";
 const REPO = "my-booking";
@@ -87,32 +86,38 @@ async function notifyFreelo(personId, choice, note) {
 }
 
 async function notifyEmail(personId, choice, name, note) {
-  const SMTP_PASS = process.env.SMTP_PASS || "";
-  if (!SMTP_PASS) return { skipped: "no smtp pass" };
-
+  // MailChannels — zdarma na Netlify, bez externího API klíče
   const variantLabel = VARIANT_LABELS[choice] || choice;
   const personName = PERSON_NAMES[personId] || name || personId;
+  const noteHtml = note ? "<br><b>Poznámka:</b> " + note : "";
   const noteText = note ? "\nPoznámka: " + note : "";
+  const now = new Date().toLocaleString("cs-CZ", { timeZone: "Europe/Prague" });
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.4every1.cz",
-    port: 587,
-    secure: false,
-    auth: { user: "tomas@feopatito.cz", pass: SMTP_PASS },
-  });
-
-  return transporter.sendMail({
-    from: '"MY Booking" <tomas@feopatito.cz>',
-    to: "tomas@feopatito.cz",
+  const payload = {
+    personalizations: [{ to: [{ email: "tomas@feopatito.cz", name: "Tomáš Repa" }] }],
+    from: { email: "booking@feopatito.cz", name: "MY Booking" },
     subject: "✅ " + personName + " vyplnil/a termín natáčení",
-    text: personName + " potvrdil/a dostupnost.\n\n📅 " + variantLabel + noteText + "\n\nČas: " + new Date().toLocaleString("cs-CZ", { timeZone: "Europe/Prague" }),
-    html: "<p><b>" + personName + "</b> potvrdil/a dostupnost na booking stránce.</p><p>📅 <b>" + variantLabel + "</b>" + (note ? "<br><b>Poznámka:</b> " + note : "") + "</p><p><small>" + new Date().toLocaleString("cs-CZ", { timeZone: "Europe/Prague" }) + "</small></p>",
-  });
+    content: [
+      {
+        type: "text/plain",
+        value: personName + " potvrdil/a dostupnost.\n\n📅 " + variantLabel + noteText + "\n\nČas: " + now,
+      },
+      {
+        type: "text/html",
+        value: "<p><b>" + personName + "</b> potvrdil/a dostupnost na booking stránce MY.</p><p>📅 <b>" + variantLabel + "</b>" + noteHtml + "</p><p><small>" + now + "</small></p>",
+      },
+    ],
+  };
+
+  return httpsRequest("api.mailchannels.net", "/tx/v1/send", "POST", {
+    "Content-Type": "application/json",
+    "User-Agent": "my-booking-netlify",
+  }, payload);
 }
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: CORS, body: "" };
-  const path = (event.path || "").replace(/\/?(\.netlify\/functions\/api|\/api)/, "") || "/";
+  const path = (event.path || "").replace(/\/?\.netlify\/functions\/api/, "").replace(/^\/api/, "") || "/";
 
   if (event.httpMethod === "GET" && path === "/read") {
     try {
@@ -142,7 +147,7 @@ exports.handler = async (event) => {
           ok: true,
           sha: r.body.content && r.body.content.sha,
           freelo: freeloResult.status,
-          email: emailResult.status,
+          email: emailResult.value && emailResult.value.status,
         }),
       };
     } catch (e) { return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: e.message }) }; }
