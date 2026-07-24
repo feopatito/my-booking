@@ -249,7 +249,9 @@ async function loadResponses() {
     currentData = JSON.parse(atob(d.content.replace(/\n/g, "")));
     renderAll();
   } catch(e) {
-    document.getElementById("progressLabel").textContent = "Chyba načítání";
+    console.error("Load error:", e);
+    document.getElementById("progressLabel").textContent = "Nepodařilo se načíst — tlačítka fungují";
+    // Grid je už vyrenderovaný staticky, nic neblokuje
   }
 }
 
@@ -324,8 +326,12 @@ function renderPersonGrid() {
         <h3>${p.name}</h3>
         <div class="role">${p.role}</div>
       </div>
-      <div class="badge">${resp ? "✓ Vyplněno" : "Vyplnit"}</div>`;
-    if (!resp) btn.onclick = () => openForm(p.id);
+      <div class="badge">${resp ? "\u2713 Vyplněno" : "Vyplnit →"}</div>`;
+    // Vždy klikatelné — i když data ještě nejsou načtena
+    btn.onclick = () => {
+      if (resp) return; // už vyplněno
+      openForm(p.id);
+    };
     grid.appendChild(btn);
   });
 }
@@ -427,6 +433,8 @@ async function submitForm() {
 }
 
 // ── INIT ──
+// Zobraz grid okamžitě se statickými daty, pak načti live
+renderPersonGrid();
 loadResponses();
 setInterval(loadResponses, 30000);
 </script>
