@@ -218,6 +218,7 @@ const REPO  = "my-booking";
 const FILE  = "responses.json";
 const TOK   = "ghp_" + "yVVOLVGZH83VLa" + "fAGpPABi";
 const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${FILE}`;
 
 // ── DATA ──
 const PEOPLE = [
@@ -240,18 +241,24 @@ let selectedPerson = null;
 // ── GITHUB READ ──
 async function loadResponses() {
   try {
-    const r = await fetch(API + "?t=" + Date.now(), {
-      headers: { Authorization: `token ${TOK}`, Accept: "application/vnd.github.v3+json", "Cache-Control": "no-cache" }
-    });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const d = await r.json();
-    currentSha = d.sha;
-    currentData = JSON.parse(atob(d.content.replace(/\n/g, "")));
+    // Načti data přes raw GitHub (bez CORS problémů) + SHA přes API
+    const [rawRes, apiRes] = await Promise.all([
+      fetch(RAW + "?t=" + Date.now()),
+      fetch(API + "?t=" + Date.now(), {
+        headers: { Authorization: `token ${TOK}`, Accept: "application/vnd.github.v3+json" }
+      })
+    ]);
+    if (!rawRes.ok) throw new Error("raw HTTP " + rawRes.status);
+    currentData = await rawRes.json();
+    if (apiRes.ok) {
+      const d = await apiRes.json();
+      currentSha = d.sha;
+    }
     renderAll();
   } catch(e) {
     console.error("Load error:", e);
-    document.getElementById("progressLabel").textContent = "Nepodařilo se načíst — tlačítka fungují";
-    // Grid je už vyrenderovaný staticky, nic neblokuje
+    document.getElementById("progressLabel").textContent = "Nepodařilo se načíst přehled";
+    // Grid je statický, tlačítka fungují
   }
 }
 
