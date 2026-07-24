@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY — Potvrzení dostupnosti natáčení</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f4f4f0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 32px 16px 64px;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo .brand {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: #1a1a1a;
+    }
+
+    .logo .sub {
+      font-size: 13px;
+      color: #777;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 16px;
+    }
+
+    .person-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .person-info h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .person-info .role {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    .person-info .location {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .option {
+      position: relative;
+    }
+
+    .option input[type="radio"] {
+      display: none;
+    }
+
+    .option label {
+      display: block;
+      padding: 14px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .option label .opt-letter {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #aaa;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .option label .opt-date {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: block;
+    }
+
+    .option label .opt-days {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .option input:checked + label {
+      border-color: #1a1a1a;
+      background: #1a1a1a;
+    }
+
+    .option input:checked + label .opt-letter,
+    .option input:checked + label .opt-date,
+    .option input:checked + label .opt-days {
+      color: #fff;
+    }
+
+    .option label:hover {
+      border-color: #999;
+    }
+
+    .option.unavailable label {
+      background: #fafafa;
+    }
+
+    .option input[value="ne"]:checked + label {
+      border-color: #e0e0e0;
+      background: #f5f5f5;
+    }
+
+    .option input[value="ne"]:checked + label .opt-letter,
+    .option input[value="ne"]:checked + label .opt-date,
+    .option input[value="ne"]:checked + label .opt-days {
+      color: #aaa;
+    }
+
+    .not-available-btn {
+      margin-top: 10px;
+    }
+
+    .not-available-btn label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #aaa;
+      cursor: pointer;
+      padding: 8px 0;
+    }
+
+    .not-available-btn input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f0f0f0;
+      margin: 20px 0;
+    }
+
+    .submit-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .name-field {
+      margin-bottom: 16px;
+    }
+
+    .name-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .name-field input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .name-field input:focus {
+      border-color: #1a1a1a;
+    }
+
+    .note-field {
+      margin-bottom: 20px;
+    }
+
+    .note-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .note-field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      resize: none;
+      min-height: 80px;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .note-field textarea:focus {
+      border-color: #1a1a1a;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.85;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 48px 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .success .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .success h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .success p {
+      color: #777;
+      font-size: 15px;
+    }
+
+    .progress-bar {
+      background: #f0f0f0;
+      border-radius: 8px;
+      height: 6px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #1a1a1a;
+      border-radius: 8px;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: #aaa;
+      text-align: right;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 480px) {
+      .options { grid-template-columns: 1fr; }
+      .person-header { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="logo">
+    <div class="brand">MY</div>
+    <div class="sub">hnutí MY · natáčení srpen 2026</div>
+  </div>
+
+  <h1>Potvrzení dostupnosti</h1>
+  <p class="intro">Vyberte prosím, ve které variantě termínu jste dostupní pro natáčení. Stačí označit Vaši dostupnost — vybereme termín, který bude vyhovovat co nejvíce lidem.</p>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">0 / 7 osobností potvrzeno</div>
+
+  <div id="form-area">
+
+    <!-- Karta: Hájek -->
+    <div class="card" id="card-hajek">
+      <h2>Osobnost 1</h2>
+      <div class="person-header">
+        <div class="avatar">H</div>
+        <div class="person-info">
+          <h3>MUDr. Josef Hájek</h3>
+          <div class="role">Primář ORL · Zastupitel PK</div>
+          <div class="location">📍 Orlickoústecká nemocnice, Ústí nad Orlicí · 12:00–14:30</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="hajek" id="hajek-a" value="A">
+          <label for="hajek-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Středa 6. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="hajek" id="hajek-b" value="B">
+          <label for="hajek-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Středa 13. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="hajek-none" onchange="toggleNone('hajek', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Mencák -->
+    <div class="card" id="card-mencak">
+      <h2>Osobnost 2</h2>
+      <div class="person-header">
+        <div class="avatar">M</div>
+        <div class="person-info">
+          <h3>Mgr. Jiří Mencák</h3>
+          <div class="role">Starosta Žamberka · Zastupitel PK</div>
+          <div class="location">📍 Žamberk — radnice + příroda · ~15:00–17:30</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="mencak" id="mencak-a" value="A">
+          <label for="mencak-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Středa 6. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="mencak" id="mencak-b" value="B">
+          <label for="mencak-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Středa 13. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="mencak-none" onchange="toggleNone('mencak', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Barták -->
+    <div class="card" id="card-bartak">
+      <h2>Osobnost 3</h2>
+      <div class="person-header">
+        <div class="avatar">B</div>
+        <div class="person-info">
+          <h3>Dominik Barták</h3>
+          <div class="role">Tiskový mluvčí PK · MO Pardubice V</div>
+          <div class="location">📍 Srnojedy · od 8:00</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="bartak" id="bartak-a" value="A">
+          <label for="bartak-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Čtvrtek 7. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="bartak" id="bartak-b" value="B">
+          <label for="bartak-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Čtvrtek 14. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="bartak-none" onchange="toggleNone('bartak', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Kozel -->
+    <div class="card" id="card-kozel">
+      <h2>Osobnost 4</h2>
+      <div class="person-header">
+        <div class="avatar">K</div>
+        <div class="person-info">
+          <h3>Josef Kozel</h3>
+          <div class="role">Radní PK pro školství · Starosta Heřmanova Městce</div>
+          <div class="location">📍 Heřmanův Městec — dílny SŠ / hokejbalový stadion · 11:00–13:30</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="kozel" id="kozel-a" value="A">
+          <label for="kozel-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Čtvrtek 7. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="kozel" id="kozel-b" value="B">
+          <label for="kozel-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Čtvrtek 14. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="kozel-none" onchange="toggleNone('kozel', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Krčil -->
+    <div class="card" id="card-krcil">
+      <h2>Osobnost 5</h2>
+      <div class="person-header">
+        <div class="avatar">K</div>
+        <div class="person-info">
+          <h3>Miroslav Krčil</h3>
+          <div class="role">Radní PK · Starosta Hlinska</div>
+          <div class="location">📍 Hlinsko — venkovní prostředí, radnice · 15:00–17:00</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="krcil" id="krcil-a" value="A">
+          <label for="krcil-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Čtvrtek 7. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="krcil" id="krcil-b" value="B">
+          <label for="krcil-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Čtvrtek 14. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="krcil-none" onchange="toggleNone('krcil', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Fiala -->
+    <div class="card" id="card-fiala">
+      <h2>Osobnost 6</h2>
+      <div class="person-header">
+        <div class="avatar">F</div>
+        <div class="person-info">
+          <h3>Petr Fiala</h3>
+          <div class="role">Senátor · Starosta Letohradu · Předseda hnutí MY</div>
+          <div class="location">📍 Letohrad — náměstí, sportoviště · 9:00–11:30</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="fiala" id="fiala-a" value="A">
+          <label for="fiala-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Pátek 8. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="fiala" id="fiala-b" value="B">
+          <label for="fiala-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Pátek 15. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="fiala-none" onchange="toggleNone('fiala', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Karta: Stránský -->
+    <div class="card" id="card-stransky">
+      <h2>Osobnost 7</h2>
+      <div class="person-header">
+        <div class="avatar">S</div>
+        <div class="person-info">
+          <h3>Ing. Jan Stránský</h3>
+          <div class="role">Starosta Přívratu · Ředitel rostlinné výroby</div>
+          <div class="location">📍 Přívrat — obecní úřad, hřiště, pole · 13:00–15:30</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="stransky" id="stransky-a" value="A">
+          <label for="stransky-a">
+            <span class="opt-letter">Varianta A</span>
+            <span class="opt-date">Pátek 8. 8.</span>
+            <span class="opt-days">6.–9. srpna 2026</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="radio" name="stransky" id="stransky-b" value="B">
+          <label for="stransky-b">
+            <span class="opt-letter">Varianta B</span>
+            <span class="opt-date">Pátek 15. 8.</span>
+            <span class="opt-days">13.–16. srpna 2026</span>
+          </label>
+        </div>
+      </div>
+      <div class="not-available-btn">
+        <label><input type="checkbox" id="stransky-none" onchange="toggleNone('stransky', this)"> V žádném termínu nejsem dostupný/á</label>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+      <div class="name-field">
+        <label for="person-name">Vaše jméno</label>
+        <input type="text" id="person-name" placeholder="Jméno a příjmení" autocomplete="name">
+      </div>
+      <div class="note-field">
+        <label for="note">Poznámka (nepovinné)</label>
+        <textarea id="note" placeholder="Omezení, komentář k termínu..."></textarea>
+      </div>
+      <button class="btn-submit" id="btn-submit" onclick="submitForm()">Odeslat dostupnost</button>
+    </div>
+
+  </div><!-- /#form-area -->
+
+  <div class="success" id="success-screen">
+    <div class="icon">✅</div>
+    <h2>Dostupnost potvrzena!</h2>
+    <p>Děkujeme. Jakmile potvrdí všichni, pošleme finální harmonogram.</p>
+  </div>
+
+</div><!-- /.container -->
+
+<script>
+  const people = ['hajek','mencak','bartak','kozel','krcil','fiala','stransky'];
+
+  function toggleNone(person, checkbox) {
+    const radios = document.querySelectorAll(`input[name="${person}"]`);
+    radios.forEach(r => {
+      r.disabled = checkbox.checked;
+      if (checkbox.checked) r.checked = false;
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    let done = 0;
+    people.forEach(p => {
+      const checked = document.querySelector(`input[name="${p}"]:checked`);
+      const noneBox = document.getElementById(`${p}-none`);
+      if (checked || (noneBox && noneBox.checked)) done++;
+    });
+    const pct = Math.round((done / people.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${done} / ${people.length} odpovězeno`;
+  }
+
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.addEventListener('change', updateProgress);
+  });
+
+  function getResults() {
+    const results = {};
+    people.forEach(p => {
+      const checked = document.querySelector(`input[name="${p}"]:checked`);
+      const noneBox = document.getElementById(`${p}-none`);
+      if (noneBox && noneBox.checked) results[p] = 'nedostupný';
+      else if (checked) results[p] = 'Varianta ' + checked.value;
+      else results[p] = 'nevyplněno';
+    });
+    return results;
+  }
+
+  function submitForm() {
+    const name = document.getElementById('person-name').value.trim();
+    if (!name) {
+      alert('Prosím vyplňte své jméno.');
+      document.getElementById('person-name').focus();
+      return;
+    }
+
+    const results = getResults();
+    const unanswered = people.filter(p => results[p] === 'nevyplněno');
+    if (unanswered.length > 0) {
+      if (!confirm(`Ještě jste nevyplnili dostupnost pro ${unanswered.length} osobnost(i). Chcete odeslat i tak?`)) return;
+    }
+
+    const note = document.getElementById('note').value.trim();
+
+    // Sestavení textu pro odeslání přes mailto
+    const names = {
+      hajek: 'MUDr. Josef Hájek',
+      mencak: 'Mgr. Jiří Mencák',
+      bartak: 'Dominik Barták',
+      kozel: 'Josef Kozel',
+      krcil: 'Miroslav Krčil',
+      fiala: 'Petr Fiala',
+      stransky: 'Ing. Jan Stránský'
+    };
+
+    let body = `Dostupnost natáčení — hnutí MY\n\nJméno: ${name}\n\n`;
+    people.forEach(p => {
+      body += `${names[p]}: ${results[p]}\n`;
+    });
+    if (note) body += `\nPoznámka: ${note}`;
+    body += '\n\n-- Odesláno přes booking formulář';
+
+    const subject = encodeURIComponent(`Dostupnost natáčení — ${name}`);
+    const bodyEnc = encodeURIComponent(body);
+
+    // Otevři mailto — v produkci nahradit webhookem/API
+    window.location.href = `mailto:tomas@feopatito.cz?subject=${subject}&body=${bodyEnc}`;
+
+    // Zobraz success
+    setTimeout(() => {
+      document.getElementById('form-area').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+    }, 800);
+  }
+</script>
+</body>
+</html>
