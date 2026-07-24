@@ -270,7 +270,11 @@ async function saveResponse(personId, choice, name, note) {
     body: JSON.stringify({
       sha: freshSha,
       data: freshData,
-      message: "odpoved: " + name + " — " + personId
+      message: "odpoved: " + name + " — " + personId,
+      personId,
+      choice,
+      name,
+      note: note || "",
     }),
   });
   if (!res.ok) {
