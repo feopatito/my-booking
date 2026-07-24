@@ -11,9 +11,13 @@ const CORS = {
   "Content-Type": "application/json",
 };
 
+function getToken() {
+  return process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.TOKEN || "";
+}
+
 function gh(method, path, body) {
-  const TOKEN = process.env.GH_TOKEN;
-  if (!TOKEN) throw new Error("GH_TOKEN not set");
+  const TOKEN = getToken();
+  if (!TOKEN) throw new Error("No token in env. Available: " + Object.keys(process.env).filter(k => k.includes("TOKEN") || k.includes("GH")).join(", "));
   return new Promise((resolve, reject) => {
     const opts = {
       hostname: "api.github.com", path, method,
@@ -29,7 +33,7 @@ function gh(method, path, body) {
       res.on("data", (c) => (d += c));
       res.on("end", () => {
         try { resolve({ status: res.statusCode, body: JSON.parse(d) }); }
-        catch (e) { reject(new Error("parse error: " + d.slice(0,100))); }
+        catch (e) { reject(new Error("parse: " + d.slice(0,100))); }
       });
     });
     req.on("error", reject);
