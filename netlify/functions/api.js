@@ -57,7 +57,7 @@ function httpsRequest(hostname, path, method, headers, body) {
 }
 
 function gh(method, path, body) {
-  const TOKEN = proces…oken || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "";
+  const TOKEN = process.env.GH_token || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "";
   if (!TOKEN) throw new Error("GH token not set");
   return httpsRequest("api.github.com", path, method, {
     Authorization: "token " + TOKEN,
@@ -70,7 +70,7 @@ function gh(method, path, body) {
 async function notifyFreelo(personId, choice, note) {
   const taskId = FREELO_TASKS[personId];
   if (!taskId) return { skipped: true };
-  const FREELO_TOKEN = proces…OKEN || "";
+  const FREELO_TOKEN = process.env.FREELO_TOKEN || "";
   if (!FREELO_TOKEN) return { skipped: "no token" };
 
   const auth = Buffer.from("tomas@feopatito.cz:" + FREELO_TOKEN).toString("base64");
