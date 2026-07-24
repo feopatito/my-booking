@@ -1,10 +1,5 @@
 {
-  "hajek": {
-    "choice": "a",
-    "name": "Josef",
-    "note": "test smtp",
-    "ts": "2026-07-24T13:58:00.000Z"
-  },
+  "hajek": null,
   "mencak": null,
   "bartak": null,
   "kozel": null,
