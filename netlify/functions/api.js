@@ -1,4 +1,5 @@
 const https = require("https");
+const tls = require("tls");
 
 const OWNER = "feopatito";
 const REPO = "my-booking";
@@ -56,7 +57,7 @@ function httpsRequest(hostname, path, method, headers, body) {
 }
 
 function gh(method, path, body) {
-  const TOKEN = process.env.GH_token || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "";
+  const TOKEN = proces…oken || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "";
   if (!TOKEN) throw new Error("GH token not set");
   return httpsRequest("api.github.com", path, method, {
     Authorization: "token " + TOKEN,
@@ -69,7 +70,7 @@ function gh(method, path, body) {
 async function notifyFreelo(personId, choice, note) {
   const taskId = FREELO_TASKS[personId];
   if (!taskId) return { skipped: true };
-  const FREELO_TOKEN = process.env.FREELO_TOKEN || "";
+  const FREELO_TOKEN = proces…OKEN || "";
   if (!FREELO_TOKEN) return { skipped: "no token" };
 
   const auth = Buffer.from("tomas@feopatito.cz:" + FREELO_TOKEN).toString("base64");
@@ -85,34 +86,71 @@ async function notifyFreelo(personId, choice, note) {
   }, { content });
 }
 
+function smtpSend(subject, textBody) {
+  const SMTP_PASS = process.env.SMTP_PASS || "";
+  if (!SMTP_PASS) return Promise.resolve({ skipped: "no smtp pass" });
+
+  return new Promise((resolve, reject) => {
+    const host = "smtp.4every1.cz";
+    const port = 465; // SMTPS (TLS od začátku)
+    const user = "tomas@feopatito.cz";
+    const to = "tomas@feopatito.cz";
+
+    const b64creds = Buffer.from("\0" + user + "\0" + SMTP_PASS).toString("base64");
+    const msgId = Date.now() + "@feopatito.cz";
+    const date = new Date().toUTCString();
+
+    const body = [
+      "From: MY Booking <" + user + ">",
+      "To: " + to,
+      "Subject: " + subject,
+      "Date: " + date,
+      "Message-ID: <" + msgId + ">",
+      "MIME-Version: 1.0",
+      "Content-Type: text/plain; charset=utf-8",
+      "",
+      textBody,
+    ].join("\r\n");
+
+    const socket = tls.connect({ host, port }, () => {
+      let buf = "";
+      let step = 0;
+
+      const send = (cmd) => socket.write(cmd + "\r\n");
+
+      socket.on("data", (chunk) => {
+        buf += chunk.toString();
+        const lines = buf.split("\r\n");
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line) continue;
+          const code = parseInt(line.slice(0, 3));
+          if (step === 0 && code === 220) { send("EHLO netlify.com"); step = 1; }
+          else if (step === 1 && code === 250) { send("AUTH PLAIN " + b64creds); step = 2; }
+          else if (step === 2 && code === 235) { send("MAIL FROM:<" + user + ">"); step = 3; }
+          else if (step === 3 && code === 250) { send("RCPT TO:<" + to + ">"); step = 4; }
+          else if (step === 4 && code === 250) { send("DATA"); step = 5; }
+          else if (step === 5 && code === 354) { send(body + "\r\n."); step = 6; }
+          else if (step === 6 && code === 250) { send("QUIT"); step = 7; }
+          else if (step === 7 && code === 221) { socket.end(); resolve({ ok: true }); }
+          else if (code >= 400) { socket.end(); reject(new Error("SMTP error: " + line)); }
+        }
+      });
+      socket.on("error", reject);
+    });
+  });
+}
+
 async function notifyEmail(personId, choice, name, note) {
-  // MailChannels — zdarma na Netlify, bez externího API klíče
   const variantLabel = VARIANT_LABELS[choice] || choice;
   const personName = PERSON_NAMES[personId] || name || personId;
-  const noteHtml = note ? "<br><b>Poznámka:</b> " + note : "";
   const noteText = note ? "\nPoznámka: " + note : "";
   const now = new Date().toLocaleString("cs-CZ", { timeZone: "Europe/Prague" });
 
-  const payload = {
-    personalizations: [{ to: [{ email: "tomas@feopatito.cz", name: "Tomáš Repa" }] }],
-    from: { email: "booking@feopatito.cz", name: "MY Booking" },
-    subject: "✅ " + personName + " vyplnil/a termín natáčení",
-    content: [
-      {
-        type: "text/plain",
-        value: personName + " potvrdil/a dostupnost.\n\n📅 " + variantLabel + noteText + "\n\nČas: " + now,
-      },
-      {
-        type: "text/html",
-        value: "<p><b>" + personName + "</b> potvrdil/a dostupnost na booking stránce MY.</p><p>📅 <b>" + variantLabel + "</b>" + noteHtml + "</p><p><small>" + now + "</small></p>",
-      },
-    ],
-  };
+  const subject = "✅ " + personName + " vyplnil/a termín natáčení MY";
+  const text = personName + " potvrdil/a dostupnost na booking stránce.\n\n📅 " + variantLabel + noteText + "\n\nČas: " + now;
 
-  return httpsRequest("api.mailchannels.net", "/tx/v1/send", "POST", {
-    "Content-Type": "application/json",
-    "User-Agent": "my-booking-netlify",
-  }, payload);
+  return smtpSend(subject, text);
 }
 
 exports.handler = async (event) => {
@@ -147,7 +185,7 @@ exports.handler = async (event) => {
           ok: true,
           sha: r.body.content && r.body.content.sha,
           freelo: freeloResult.status,
-          email: emailResult.value && emailResult.value.status,
+          email: emailResult.status + (emailResult.reason ? ": " + emailResult.reason.message : ""),
         }),
       };
     } catch (e) { return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: e.message }) }; }
