@@ -12,7 +12,7 @@ const CORS = {
 };
 
 function getToken() {
-  return process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.TOKEN || "";
+  return process.env.GH_token || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.TOKEN || "";
 }
 
 function gh(method, path, body) {
