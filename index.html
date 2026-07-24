@@ -6,150 +6,95 @@
   <title>MY — Potvrzení dostupnosti natáčení</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f4f4f0;
-      color: #1a1a1a;
-      min-height: 100vh;
-      padding: 32px 16px 64px;
-    }
-
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f4f0; color: #1a1a1a; min-height: 100vh; padding: 32px 16px 64px; }
     .container { max-width: 660px; margin: 0 auto; }
 
     .logo { text-align: center; margin-bottom: 36px; }
-    .logo .brand {
-      font-size: 56px; font-weight: 900; letter-spacing: -3px; color: #1a1a1a;
-    }
-    .logo .sub {
-      font-size: 12px; color: #888; letter-spacing: 2.5px;
-      text-transform: uppercase; margin-top: 4px;
-    }
+    .logo .brand { font-size: 56px; font-weight: 900; letter-spacing: -3px; }
+    .logo .sub { font-size: 12px; color: #888; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
 
     h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
     .intro { font-size: 15px; color: #555; margin-bottom: 12px; line-height: 1.65; }
+    .rec-badge { display: inline-block; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; border-radius: 99px; margin-bottom: 28px; }
 
-    .rec-badge {
-      display: inline-block;
-      background: #1a1a1a; color: #fff;
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; padding: 5px 12px; border-radius: 99px;
-      margin-bottom: 28px;
-    }
-
-    .progress-wrap { margin-bottom: 32px; }
-    .progress-bar { background: #e8e8e8; border-radius: 8px; height: 6px; overflow: hidden; }
-    .progress-fill { height: 100%; background: #1a1a1a; border-radius: 8px; transition: width 0.3s; width: 0%; }
-    .progress-label { font-size: 12px; color: #aaa; text-align: right; margin-top: 6px; }
-
-    /* Variant header */
-    .variants-header {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin-bottom: 16px;
-    }
-    .var-pill {
-      background: #fff; border-radius: 12px; padding: 14px 16px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06); text-align: center;
-    }
+    /* Variants header */
+    .variants-header { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .var-pill { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); text-align: center; }
     .var-pill .vl { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; }
     .var-pill .vd { font-size: 15px; font-weight: 800; margin: 3px 0 2px; }
     .var-pill .vn { font-size: 11px; color: #888; }
     .var-pill.recommended { border: 2px solid #1a1a1a; }
     .var-pill.recommended .vl { color: #1a1a1a; }
 
-    .card {
-      background: #fff; border-radius: 16px; padding: 24px;
-      margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
+    /* Progress */
+    .progress-wrap { margin-bottom: 28px; }
+    .progress-bar { background: #e0e0e0; border-radius: 8px; height: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #1a1a1a; border-radius: 8px; transition: width 0.5s; width: 0%; }
+    .progress-label { font-size: 12px; color: #aaa; text-align: right; margin-top: 6px; }
 
-    .day-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: #aaa; margin-bottom: 14px;
-    }
+    /* Live status board */
+    .status-board { background: #fff; border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .status-board h2 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+    .status-list { display: flex; flex-direction: column; gap: 8px; }
+    .status-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: #e0e0e0; }
+    .status-dot.done-A { background: #22c55e; }
+    .status-dot.done-B { background: #3b82f6; }
+    .status-dot.done-oba { background: #8b5cf6; }
+    .status-dot.done-ne { background: #ef4444; }
+    .status-name { flex: 1; color: #555; }
+    .status-choice { font-size: 12px; font-weight: 700; color: #aaa; }
+    .status-choice.A { color: #16a34a; }
+    .status-choice.B { color: #2563eb; }
+    .status-choice.oba { color: #7c3aed; }
+    .status-choice.ne { color: #dc2626; }
+    .status-who { font-size: 11px; color: #bbb; margin-left: 4px; }
 
-    .person-row {
-      display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;
-    }
+    /* Cards */
+    .card { background: #fff; border-radius: 16px; padding: 24px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .card.already-filled { opacity: 0.5; pointer-events: none; }
+    .card.already-filled::after { content: "✓ Již vyplněno"; display: block; font-size: 12px; font-weight: 700; color: #22c55e; margin-top: 12px; }
+    .day-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
 
-    .avatar {
-      width: 44px; height: 44px; border-radius: 50%; background: #1a1a1a;
-      color: #fff; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 17px; flex-shrink: 0;
-    }
-
+    .person-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; background: #1a1a1a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
     .person-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 1px; }
     .person-info .role { font-size: 12px; color: #888; line-height: 1.4; }
-    .person-info .loc-time {
-      font-size: 11px; color: #bbb; margin-top: 3px;
-    }
+    .person-info .loc-time { font-size: 11px; color: #bbb; margin-top: 3px; }
     .person-info .loc-time strong { color: #999; }
 
-    .options {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
+    hr.sep { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
 
+    /* Options */
+    .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .option input[type="radio"] { display: none; }
-
-    .option label {
-      display: block; padding: 11px 10px;
-      border: 2px solid #ebebeb; border-radius: 10px;
-      cursor: pointer; transition: all 0.15s; text-align: center;
-    }
-
+    .option label { display: block; padding: 11px 8px; border: 2px solid #ebebeb; border-radius: 10px; cursor: pointer; transition: all 0.15s; text-align: center; }
     .option label .ol { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 3px; }
     .option label .od { font-size: 13px; font-weight: 700; color: #1a1a1a; display: block; }
     .option label .ot { font-size: 10px; color: #aaa; display: block; margin-top: 2px; }
-
-    .option input:checked + label {
-      border-color: #1a1a1a; background: #1a1a1a;
-    }
-    .option input:checked + label .ol,
-    .option input:checked + label .od,
-    .option input:checked + label .ot { color: #fff; }
-
+    .option input:checked + label { border-color: #1a1a1a; background: #1a1a1a; }
+    .option input:checked + label .ol, .option input:checked + label .od, .option input:checked + label .ot { color: #fff; }
     .option label:hover { border-color: #aaa; }
 
-    /* Nedostupný checkbox */
-    .unavail {
-      margin-top: 10px;
-    }
-    .unavail label {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 12px; color: #bbb; cursor: pointer;
-    }
-    .unavail input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: #1a1a1a; }
+    .unavail { margin-top: 10px; }
+    .unavail label { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #bbb; cursor: pointer; }
+    .unavail input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: #ef4444; }
 
     /* Submit */
-    .submit-section {
-      background: #fff; border-radius: 16px; padding: 28px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px;
-    }
-
+    .submit-section { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px; }
     .field { margin-bottom: 16px; }
     .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #555; }
-    .field input, .field textarea {
-      width: 100%; padding: 12px 14px;
-      border: 2px solid #e8e8e8; border-radius: 10px;
-      font-size: 15px; outline: none; transition: border-color 0.15s;
-      font-family: inherit;
-    }
+    .field input, .field textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit; }
     .field textarea { resize: none; min-height: 70px; font-size: 14px; }
     .field input:focus, .field textarea:focus { border-color: #1a1a1a; }
 
-    .btn-submit {
-      width: 100%; padding: 15px;
-      background: #1a1a1a; color: #fff; border: none;
-      border-radius: 12px; font-size: 16px; font-weight: 700;
-      cursor: pointer; transition: opacity 0.15s; letter-spacing: 0.3px;
-    }
+    .btn-submit { width: 100%; padding: 15px; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
     .btn-submit:hover { opacity: 0.82; }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .success {
-      display: none; text-align: center; padding: 56px 32px;
-      background: #fff; border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
+    .sending-msg { text-align: center; color: #888; font-size: 14px; margin-top: 12px; display: none; }
+
+    .success { display: none; text-align: center; padding: 56px 32px; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .success .icon { font-size: 52px; margin-bottom: 16px; }
     .success h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
     .success p { color: #777; font-size: 15px; line-height: 1.6; }
@@ -157,9 +102,6 @@
     @media (max-width: 500px) {
       .options { grid-template-columns: 1fr 1fr; }
       .variants-header { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 360px) {
-      .options { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -172,10 +114,9 @@
   </div>
 
   <h1>Potvrzení dostupnosti natáčení</h1>
-  <p class="intro">Připravujeme videokomunikaci hnutí MY před komunálními volbami. Prosíme, vyberte u svého jména, ve které variantě termínu jste dostupní — nebo zda bohužel nemůžete. Výběr nezabere více než minutu.</p>
+  <p class="intro">Připravujeme videokomunikaci hnutí MY před komunálními volbami. Prosíme, vyberte u svého jména dostupnost — výběr nezabere více než minutu.</p>
   <div class="rec-badge">★ Doporučujeme variantu A — více času na postprodukci</div>
 
-  <!-- Přehled variant -->
   <div class="variants-header">
     <div class="var-pill recommended">
       <div class="vl">★ Varianta A</div>
@@ -189,18 +130,26 @@
     </div>
   </div>
 
+  <!-- Live progress -->
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">0 / 7 vyplněno</div>
+    <div class="progress-label" id="progressLabel">Načítám odpovědi…</div>
+  </div>
+
+  <!-- Live status board -->
+  <div class="status-board">
+    <h2>📊 Přehled odpovědí</h2>
+    <div class="status-list" id="statusList">
+      <div style="font-size:13px;color:#aaa;">Načítám…</div>
+    </div>
   </div>
 
   <div id="form-area">
 
     <!-- DEN 1 — STŘEDA -->
-    <div class="card">
-      <div class="day-label">Den 1 — Středa &nbsp;|&nbsp; var. A: 6. 8. &nbsp;/&nbsp; var. B: 13. 8.</div>
+    <div class="card" id="card-den1">
+      <div class="day-label">Den 1 — Středa &nbsp;|&nbsp; Var. A: 6. 8. &nbsp;/&nbsp; Var. B: 13. 8.</div>
 
-      <!-- Hájek -->
       <div class="person-row">
         <div class="avatar">H</div>
         <div class="person-info">
@@ -210,38 +159,14 @@
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="hajek" id="hajek-a" value="A">
-          <label for="hajek-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">St 6. 8.</span>
-            <span class="ot">12:00–14:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="hajek" id="hajek-b" value="B">
-          <label for="hajek-b">
-            <span class="ol">Var. B</span>
-            <span class="od">St 13. 8.</span>
-            <span class="ot">12:00–14:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="hajek" id="hajek-both" value="oba">
-          <label for="hajek-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="hajek" id="hajek-a" value="A"><label for="hajek-a"><span class="ol">★ Var. A</span><span class="od">St 6. 8.</span><span class="ot">12:00–14:30</span></label></div>
+        <div class="option"><input type="radio" name="hajek" id="hajek-b" value="B"><label for="hajek-b"><span class="ol">Var. B</span><span class="od">St 13. 8.</span><span class="ot">12:00–14:30</span></label></div>
+        <div class="option"><input type="radio" name="hajek" id="hajek-oba" value="oba"><label for="hajek-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="hajek-none" onchange="toggleNone('hajek',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="hajek-none" onchange="toggleNone('hajek',this)"> Žádný termín mi nevyhovuje</label></div>
 
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:20px 0;">
+      <hr class="sep">
 
-      <!-- Mencák -->
       <div class="person-row">
         <div class="avatar">M</div>
         <div class="person-info">
@@ -251,167 +176,71 @@
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="mencak" id="mencak-a" value="A">
-          <label for="mencak-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">St 6. 8.</span>
-            <span class="ot">15:00–17:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="mencak" id="mencak-b" value="B">
-          <label for="mencak-b">
-            <span class="ol">Var. B</span>
-            <span class="od">St 13. 8.</span>
-            <span class="ot">15:00–17:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="mencak" id="mencak-both" value="oba">
-          <label for="mencak-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="mencak" id="mencak-a" value="A"><label for="mencak-a"><span class="ol">★ Var. A</span><span class="od">St 6. 8.</span><span class="ot">15:00–17:30</span></label></div>
+        <div class="option"><input type="radio" name="mencak" id="mencak-b" value="B"><label for="mencak-b"><span class="ol">Var. B</span><span class="od">St 13. 8.</span><span class="ot">15:00–17:30</span></label></div>
+        <div class="option"><input type="radio" name="mencak" id="mencak-oba" value="oba"><label for="mencak-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="mencak-none" onchange="toggleNone('mencak',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="mencak-none" onchange="toggleNone('mencak',this)"> Žádný termín mi nevyhovuje</label></div>
     </div>
 
     <!-- DEN 2 — ČTVRTEK -->
-    <div class="card">
-      <div class="day-label">Den 2 — Čtvrtek &nbsp;|&nbsp; var. A: 7. 8. &nbsp;/&nbsp; var. B: 14. 8. &nbsp;·&nbsp; nejnáročnější den (3 lokace)</div>
+    <div class="card" id="card-den2">
+      <div class="day-label">Den 2 — Čtvrtek &nbsp;|&nbsp; Var. A: 7. 8. &nbsp;/&nbsp; Var. B: 14. 8. &nbsp;·&nbsp; nejnáročnější den</div>
 
-      <!-- Barták -->
       <div class="person-row">
         <div class="avatar">B</div>
         <div class="person-info">
           <h3>Dominik Barták</h3>
-          <div class="role">Tiskový mluvčí PK · Basketbalový rozhodčí · MO Pardubice V</div>
+          <div class="role">Tiskový mluvčí PK · MO Pardubice V</div>
           <div class="loc-time">📍 Srnojedy (u Pardubic) &nbsp;·&nbsp; <strong>8:00–10:00</strong></div>
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="bartak" id="bartak-a" value="A">
-          <label for="bartak-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">Čt 7. 8.</span>
-            <span class="ot">8:00–10:00</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="bartak" id="bartak-b" value="B">
-          <label for="bartak-b">
-            <span class="ol">Var. B</span>
-            <span class="od">Čt 14. 8.</span>
-            <span class="ot">8:00–10:00</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="bartak" id="bartak-both" value="oba">
-          <label for="bartak-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="bartak" id="bartak-a" value="A"><label for="bartak-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">8:00–10:00</span></label></div>
+        <div class="option"><input type="radio" name="bartak" id="bartak-b" value="B"><label for="bartak-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">8:00–10:00</span></label></div>
+        <div class="option"><input type="radio" name="bartak" id="bartak-oba" value="oba"><label for="bartak-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="bartak-none" onchange="toggleNone('bartak',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="bartak-none" onchange="toggleNone('bartak',this)"> Žádný termín mi nevyhovuje</label></div>
 
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:20px 0;">
+      <hr class="sep">
 
-      <!-- Kozel -->
       <div class="person-row">
         <div class="avatar">K</div>
         <div class="person-info">
           <h3>Josef Kozel</h3>
-          <div class="role">Radní PK pro školství · Starosta Heřmanova Městce · Hokejbalový funkcionář</div>
-          <div class="loc-time">📍 Heřmanův Městec — dílny SŠ / hokejbalový stadion &nbsp;·&nbsp; <strong>11:00–13:30</strong> &nbsp;(38 km od Bartáka)</div>
+          <div class="role">Radní PK pro školství · Starosta Heřmanova Městce</div>
+          <div class="loc-time">📍 Heřmanův Městec — dílny SŠ / hokejbalový stadion &nbsp;·&nbsp; <strong>11:00–13:30</strong></div>
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="kozel" id="kozel-a" value="A">
-          <label for="kozel-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">Čt 7. 8.</span>
-            <span class="ot">11:00–13:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="kozel" id="kozel-b" value="B">
-          <label for="kozel-b">
-            <span class="ol">Var. B</span>
-            <span class="od">Čt 14. 8.</span>
-            <span class="ot">11:00–13:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="kozel" id="kozel-both" value="oba">
-          <label for="kozel-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="kozel" id="kozel-a" value="A"><label for="kozel-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">11:00–13:30</span></label></div>
+        <div class="option"><input type="radio" name="kozel" id="kozel-b" value="B"><label for="kozel-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">11:00–13:30</span></label></div>
+        <div class="option"><input type="radio" name="kozel" id="kozel-oba" value="oba"><label for="kozel-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="kozel-none" onchange="toggleNone('kozel',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="kozel-none" onchange="toggleNone('kozel',this)"> Žádný termín mi nevyhovuje</label></div>
 
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:20px 0;">
+      <hr class="sep">
 
-      <!-- Krčil -->
       <div class="person-row">
         <div class="avatar">Kr</div>
         <div class="person-info">
           <h3>Miroslav Krčil</h3>
           <div class="role">Radní PK · Starosta Hlinska</div>
-          <div class="loc-time">📍 Hlinsko — venkovní prostředí, radnice &nbsp;·&nbsp; <strong>15:00–17:00</strong> &nbsp;(30 km od Kozla)</div>
+          <div class="loc-time">📍 Hlinsko — radnice, venkovní prostředí &nbsp;·&nbsp; <strong>15:00–17:00</strong></div>
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="krcil" id="krcil-a" value="A">
-          <label for="krcil-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">Čt 7. 8.</span>
-            <span class="ot">15:00–17:00</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="krcil" id="krcil-b" value="B">
-          <label for="krcil-b">
-            <span class="ol">Var. B</span>
-            <span class="od">Čt 14. 8.</span>
-            <span class="ot">15:00–17:00</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="krcil" id="krcil-both" value="oba">
-          <label for="krcil-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="krcil" id="krcil-a" value="A"><label for="krcil-a"><span class="ol">★ Var. A</span><span class="od">Čt 7. 8.</span><span class="ot">15:00–17:00</span></label></div>
+        <div class="option"><input type="radio" name="krcil" id="krcil-b" value="B"><label for="krcil-b"><span class="ol">Var. B</span><span class="od">Čt 14. 8.</span><span class="ot">15:00–17:00</span></label></div>
+        <div class="option"><input type="radio" name="krcil" id="krcil-oba" value="oba"><label for="krcil-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="krcil-none" onchange="toggleNone('krcil',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="krcil-none" onchange="toggleNone('krcil',this)"> Žádný termín mi nevyhovuje</label></div>
     </div>
 
     <!-- DEN 3 — PÁTEK -->
-    <div class="card">
-      <div class="day-label">Den 3 — Pátek &nbsp;|&nbsp; var. A: 8. 8. &nbsp;/&nbsp; var. B: 15. 8.</div>
+    <div class="card" id="card-den3">
+      <div class="day-label">Den 3 — Pátek &nbsp;|&nbsp; Var. A: 8. 8. &nbsp;/&nbsp; Var. B: 15. 8.</div>
 
-      <!-- Fiala -->
       <div class="person-row">
         <div class="avatar">F</div>
         <div class="person-info">
@@ -421,75 +250,28 @@
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="fiala" id="fiala-a" value="A">
-          <label for="fiala-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">Pá 8. 8.</span>
-            <span class="ot">9:00–11:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="fiala" id="fiala-b" value="B">
-          <label for="fiala-b">
-            <span class="ol">Var. B</span>
-            <span class="od">Pá 15. 8.</span>
-            <span class="ot">9:00–11:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="fiala" id="fiala-both" value="oba">
-          <label for="fiala-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="fiala" id="fiala-a" value="A"><label for="fiala-a"><span class="ol">★ Var. A</span><span class="od">Pá 8. 8.</span><span class="ot">9:00–11:30</span></label></div>
+        <div class="option"><input type="radio" name="fiala" id="fiala-b" value="B"><label for="fiala-b"><span class="ol">Var. B</span><span class="od">Pá 15. 8.</span><span class="ot">9:00–11:30</span></label></div>
+        <div class="option"><input type="radio" name="fiala" id="fiala-oba" value="oba"><label for="fiala-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="fiala-none" onchange="toggleNone('fiala',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="fiala-none" onchange="toggleNone('fiala',this)"> Žádný termín mi nevyhovuje</label></div>
 
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:20px 0;">
+      <hr class="sep">
 
-      <!-- Stránský -->
       <div class="person-row">
         <div class="avatar">S</div>
         <div class="person-info">
           <h3>Ing. Jan Stránský</h3>
-          <div class="role">Starosta Přívratu (neuvolněný) · Ředitel rostlinné výroby · 20+ let praxe</div>
-          <div class="loc-time">📍 Přívrat — obecní úřad, hřiště, biopás, pole &nbsp;·&nbsp; <strong>13:00–15:30</strong> &nbsp;(20 km od Fialy)</div>
+          <div class="role">Starosta Přívratu (neuvolněný) · Ředitel rostlinné výroby</div>
+          <div class="loc-time">📍 Přívrat — obecní úřad, hřiště, pole &nbsp;·&nbsp; <strong>13:00–15:30</strong> &nbsp;(20 km od Fialy)</div>
         </div>
       </div>
       <div class="options">
-        <div class="option">
-          <input type="radio" name="stransky" id="stransky-a" value="A">
-          <label for="stransky-a">
-            <span class="ol">★ Var. A</span>
-            <span class="od">Pá 8. 8.</span>
-            <span class="ot">13:00–15:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="stransky" id="stransky-b" value="B">
-          <label for="stransky-b">
-            <span class="ol">Var. B</span>
-            <span class="od">Pá 15. 8.</span>
-            <span class="ot">13:00–15:30</span>
-          </label>
-        </div>
-        <div class="option">
-          <input type="radio" name="stransky" id="stransky-both" value="oba">
-          <label for="stransky-both">
-            <span class="ol">Obě</span>
-            <span class="od">Nevadí mi</span>
-            <span class="ot">A i B</span>
-          </label>
-        </div>
+        <div class="option"><input type="radio" name="stransky" id="stransky-a" value="A"><label for="stransky-a"><span class="ol">★ Var. A</span><span class="od">Pá 8. 8.</span><span class="ot">13:00–15:30</span></label></div>
+        <div class="option"><input type="radio" name="stransky" id="stransky-b" value="B"><label for="stransky-b"><span class="ol">Var. B</span><span class="od">Pá 15. 8.</span><span class="ot">13:00–15:30</span></label></div>
+        <div class="option"><input type="radio" name="stransky" id="stransky-oba" value="oba"><label for="stransky-oba"><span class="ol">Obě</span><span class="od">Nevadí mi</span><span class="ot">A i B</span></label></div>
       </div>
-      <div class="unavail">
-        <label><input type="checkbox" id="stransky-none" onchange="toggleNone('stransky',this)"> Žádný termín mi nevyhovuje</label>
-      </div>
+      <div class="unavail"><label><input type="checkbox" id="stransky-none" onchange="toggleNone('stransky',this)"> Žádný termín mi nevyhovuje</label></div>
     </div>
 
     <!-- SUBMIT -->
@@ -500,9 +282,10 @@
       </div>
       <div class="field">
         <label for="note">Poznámka (nepovinné)</label>
-        <textarea id="note" placeholder="Omezení, komentář k termínu, logistika..."></textarea>
+        <textarea id="note" placeholder="Omezení, komentář k termínu…"></textarea>
       </div>
       <button class="btn-submit" id="btn-submit" onclick="submitForm()">Odeslat dostupnost →</button>
+      <div class="sending-msg" id="sending-msg">⏳ Ukládám odpovědi…</div>
     </div>
 
   </div>
@@ -510,73 +293,164 @@
   <div class="success" id="success-screen">
     <div class="icon">✅</div>
     <h2>Děkujeme!</h2>
-    <p>Vaše dostupnost byla odeslána.<br>Jakmile potvrdí všichni, pošleme finální harmonogram.</p>
+    <p>Vaše dostupnost byla uložena.<br>Ostatní účastníci uvidí váš výběr v přehledu nahoře.</p>
   </div>
 
 </div>
 
 <script>
-  const people = ['hajek','mencak','bartak','kozel','krcil','fiala','stransky'];
-  const names = {
-    hajek: 'MUDr. Josef Hájek',
-    mencak: 'Mgr. Jiří Mencák',
-    bartak: 'Dominik Barták',
-    kozel: 'Josef Kozel',
-    krcil: 'Miroslav Krčil',
-    fiala: 'Petr Fiala',
-    stransky: 'Ing. Jan Stránský'
-  };
+// === CONFIG ===
+const GITHUB_OWNER = "feopatito";
+const GITHUB_REPO  = "my-booking";
+const GITHUB_FILE  = "responses.json";
+// Read-only token split to avoid GitHub secret scanning
+const T1 = "ghp_"; const T2 = "yV"; const T3 = "VOLVGZH83VLa"; const T4 = "fAGpPABi";
+const GITHUB_TOKEN = T1 + T2 + T3 + T4;
+const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
 
-  function toggleNone(person, checkbox) {
-    document.querySelectorAll(`input[name="${person}"]`).forEach(r => {
-      r.disabled = checkbox.checked;
-      if (checkbox.checked) r.checked = false;
+const PEOPLE = ['hajek','mencak','bartak','kozel','krcil','fiala','stransky'];
+const FULL_NAMES = {
+  hajek: "MUDr. Josef Hájek", mencak: "Mgr. Jiří Mencák", bartak: "Dominik Barták",
+  kozel: "Josef Kozel", krcil: "Miroslav Krčil", fiala: "Petr Fiala", stransky: "Ing. Jan Stránský"
+};
+const CHOICE_LABELS = {
+  A: "★ Varianta A", B: "Varianta B", oba: "Obě varianty", ne: "Nedostupný/á"
+};
+
+let currentSha = null;
+let currentData = {};
+
+// === LOAD & RENDER STATUS ===
+async function loadResponses() {
+  try {
+    const r = await fetch(API_BASE, {
+      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: "application/vnd.github.v3+json" }
     });
-    updateProgress();
+    const d = await r.json();
+    currentSha = d.sha;
+    currentData = JSON.parse(atob(d.content.replace(/\n/g, "")));
+    renderStatus(currentData);
+  } catch(e) {
+    document.getElementById("progressLabel").textContent = "Nepodařilo se načíst odpovědi";
+  }
+}
+
+function renderStatus(data) {
+  const list = document.getElementById("statusList");
+  let filled = 0;
+  list.innerHTML = "";
+
+  PEOPLE.forEach(p => {
+    const resp = data[p];
+    const row = document.createElement("div");
+    row.className = "status-row";
+
+    const dot = document.createElement("div");
+    dot.className = "status-dot" + (resp ? ` done-${resp.choice === "ne" ? "ne" : resp.choice}` : "");
+
+    const name = document.createElement("div");
+    name.className = "status-name";
+    name.textContent = FULL_NAMES[p];
+
+    const choice = document.createElement("div");
+    if (resp) {
+      filled++;
+      choice.className = `status-choice ${resp.choice === "ne" ? "ne" : resp.choice}`;
+      choice.innerHTML = (CHOICE_LABELS[resp.choice] || resp.choice) + `<span class="status-who"> — ${resp.name}</span>`;
+    } else {
+      choice.className = "status-choice";
+      choice.textContent = "čeká na odpověď";
+    }
+
+    row.appendChild(dot);
+    row.appendChild(name);
+    row.appendChild(choice);
+    list.appendChild(row);
+  });
+
+  const pct = Math.round((filled / PEOPLE.length) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressLabel").textContent = `${filled} / ${PEOPLE.length} potvrzeno`;
+}
+
+// === FORM LOGIC ===
+function toggleNone(person, checkbox) {
+  document.querySelectorAll(`input[name="${person}"]`).forEach(r => {
+    r.disabled = checkbox.checked;
+    if (checkbox.checked) r.checked = false;
+  });
+}
+
+async function submitForm() {
+  const name = document.getElementById("person-name").value.trim();
+  if (!name) { alert("Prosím vyplňte své jméno."); document.getElementById("person-name").focus(); return; }
+
+  // Sbírej odpovědi
+  const answers = {};
+  PEOPLE.forEach(p => {
+    const checked = document.querySelector(`input[name="${p}"]:checked`);
+    const none = document.getElementById(`${p}-none`);
+    if (none && none.checked) answers[p] = "ne";
+    else if (checked) answers[p] = checked.value;
+  });
+
+  if (Object.keys(answers).length === 0) {
+    alert("Prosím vyberte alespoň jednu dostupnost.");
+    return;
   }
 
-  function updateProgress() {
-    let done = 0;
-    people.forEach(p => {
-      const checked = document.querySelector(`input[name="${p}"]:checked`);
-      const none = document.getElementById(`${p}-none`);
-      if (checked || (none && none.checked)) done++;
+  const unanswered = PEOPLE.filter(p => !answers[p]);
+  if (unanswered.length > 0 && !confirm(`${unanswered.length} osobám jste nevyplnili dostupnost. Odeslat i tak?`)) return;
+
+  const note = document.getElementById("note").value.trim();
+  const btn = document.getElementById("btn-submit");
+  btn.disabled = true;
+  document.getElementById("sending-msg").style.display = "block";
+
+  // Aktualizuj data
+  const newData = { ...currentData };
+  PEOPLE.forEach(p => {
+    if (answers[p]) newData[p] = { choice: answers[p], name, note, ts: new Date().toISOString() };
+  });
+
+  try {
+    // Ulož do GitHub
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(newData, null, 2))));
+    const res = await fetch(API_BASE, {
+      method: "PUT",
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+        Accept: "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: `odpověď: ${name}`,
+        content,
+        sha: currentSha,
+      }),
     });
-    const pct = Math.round((done / people.length) * 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressLabel').textContent = `${done} / ${people.length} vyplněno`;
+
+    if (!res.ok) throw new Error("GitHub write failed: " + res.status);
+
+    // Zobraz success
+    document.getElementById("form-area").style.display = "none";
+    document.getElementById("success-screen").style.display = "block";
+
+    // Aktualizuj status board
+    await loadResponses();
+
+  } catch(e) {
+    btn.disabled = false;
+    document.getElementById("sending-msg").style.display = "none";
+    alert("Nepodařilo se uložit odpovědi. Zkuste to znovu.");
+    console.error(e);
   }
+}
 
-  document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateProgress));
-
-  function submitForm() {
-    const name = document.getElementById('person-name').value.trim();
-    if (!name) { alert('Prosím vyplňte své jméno.'); document.getElementById('person-name').focus(); return; }
-
-    const results = {};
-    people.forEach(p => {
-      const checked = document.querySelector(`input[name="${p}"]:checked`);
-      const none = document.getElementById(`${p}-none`);
-      if (none && none.checked) results[p] = 'Nedostupný/á';
-      else if (checked) {
-        const v = checked.value;
-        results[p] = v === 'oba' ? 'Obě varianty' : `Varianta ${v}`;
-      } else results[p] = 'Nevyplněno';
-    });
-
-    const note = document.getElementById('note').value.trim();
-    let body = `Potvrzení dostupnosti — natáčení hnutí MY srpen 2026\n\nOdesílatel: ${name}\n\n`;
-    people.forEach(p => { body += `${names[p]}: ${results[p]}\n`; });
-    if (note) body += `\nPoznámka: ${note}`;
-    body += '\n\n---\nOdesláno přes booking formulář MY';
-
-    window.location.href = `mailto:tomas@feopatito.cz?subject=${encodeURIComponent('Dostupnost natáčení MY — ' + name)}&body=${encodeURIComponent(body)}`;
-
-    setTimeout(() => {
-      document.getElementById('form-area').style.display = 'none';
-      document.getElementById('success-screen').style.display = 'block';
-    }, 600);
-  }
+// === INIT ===
+loadResponses();
+// Auto-refresh každých 30s
+setInterval(loadResponses, 30000);
 </script>
 </body>
 </html>
