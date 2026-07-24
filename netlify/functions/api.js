@@ -3,6 +3,7 @@ const https = require("https");
 const OWNER = "feopatito";
 const REPO = "my-booking";
 const FILE = "responses.json";
+const TOKEN = process.env.GITHUB_TOKEN;
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -12,7 +13,6 @@ const CORS = {
 };
 
 function gh(method, path, body) {
-  const TOKEN = process.env.GITHUB_TOKEN;
   return new Promise((resolve, reject) => {
     const opts = {
       hostname: "api.github.com",
@@ -29,8 +29,11 @@ function gh(method, path, body) {
       let d = "";
       res.on("data", (c) => (d += c));
       res.on("end", () => {
-        try { resolve({ status: res.statusCode, body: JSON.parse(d) }); }
-        catch(e) { reject(e); }
+        try {
+          resolve({ status: res.statusCode, body: JSON.parse(d) });
+        } catch (e) {
+          reject(new Error("JSON parse error: " + d.slice(0, 200)));
+        }
       });
     });
     req.on("error", reject);
@@ -44,19 +47,25 @@ exports.handler = async (event) => {
     return { statusCode: 204, headers: CORS, body: "" };
   }
 
-  const path = event.path.replace(/\/?\.netlify\/functions\/api/, "").replace(/^\/api/, "") || "/";
+  const path = (event.path || "")
+    .replace(/\/?\.netlify\/functions\/api/, "")
+    .replace(/^\/api/, "") || "/";
 
   // GET /read
   if (event.httpMethod === "GET" && path === "/read") {
     try {
       const r = await gh("GET", `/repos/${OWNER}/${REPO}/contents/${FILE}?t=${Date.now()}`);
-      const data = JSON.parse(Buffer.from(r.body.content.replace(/\n/g, ""), "base64").toString());
+      if (r.status !== 200) {
+        return { statusCode: r.status, headers: CORS, body: JSON.stringify({ error: r.body.message }) };
+      }
+      const rawContent = r.body.content || "";
+      const data = JSON.parse(Buffer.from(rawContent.replace(/\n/g, ""), "base64").toString("utf-8"));
       return {
         statusCode: 200,
         headers: CORS,
         body: JSON.stringify({ sha: r.body.sha, data }),
       };
-    } catch(e) {
+    } catch (e) {
       return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: e.message }) };
     }
   }
@@ -65,7 +74,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === "POST" && path === "/write") {
     try {
       const { sha, data, message } = JSON.parse(event.body);
-      const content = Buffer.from(JSON.stringify(data, null, 2)).toString("base64");
+      const content = Buffer.from(JSON.stringify(data, null, 2), "utf-8").toString("base64");
       const r = await gh("PUT", `/repos/${OWNER}/${REPO}/contents/${FILE}`, {
         message: message || "odpoved",
         content,
@@ -77,9 +86,9 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         headers: CORS,
-        body: JSON.stringify({ ok: true, sha: r.body.content?.sha }),
+        body: JSON.stringify({ ok: true, sha: r.body.content && r.body.content.sha }),
       };
-    } catch(e) {
+    } catch (e) {
       return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: e.message }) };
     }
   }
