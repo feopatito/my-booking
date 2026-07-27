@@ -169,13 +169,13 @@
     <div class="variants-header">
       <div class="var-pill rec">
         <div class="vl">★ Varianta A</div>
-        <div class="vd">6.–8. 8. 2026</div>
-        <div class="vn">Čt 6.8. / Pá 7.8. / So 8.8.</div>
+        <div class="vd">5.–7. 8. 2026</div>
+        <div class="vn">St 5.8. / Čt 6.8. / Pá 7.8.</div>
       </div>
       <div class="var-pill">
         <div class="vl">Varianta B</div>
-        <div class="vd">13.–15. 8. 2026</div>
-        <div class="vn">Čt 13.8. / Pá 14.8. / So 15.8.</div>
+        <div class="vd">12.–14. 8. 2026</div>
+        <div class="vn">St 12.8. / Čt 13.8. / Pá 14.8.</div>
       </div>
     </div>
 
@@ -222,13 +222,13 @@ const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${FILE}`;
 
 // ── DATA ──
 const PEOPLE = [
-  { id: "hajek",    name: "MUDr. Josef Hájek",    av: "H",  role: "Primář ORL · Zastupitel PK",                        day: "Den 1 — Čtvrtek",  dayA: "Čt 6. 8.",  dayB: "Čt 13. 8.", timeA: "12:00–14:30", timeB: "12:00–14:30", loc: "Orlickoústecká nemocnice, Ústí nad Orlicí" },
-  { id: "mencak",   name: "Mgr. Jiří Mencák",     av: "M",  role: "Starosta Žamberka · Zastupitel PK",                 day: "Den 1 — Čtvrtek",  dayA: "Čt 6. 8.",  dayB: "Čt 13. 8.", timeA: "15:00–17:30", timeB: "15:00–17:30", loc: "Žamberk — radnice + příroda" },
-  { id: "bartak",   name: "Dominik Barták",        av: "B",  role: "Tiskový mluvčí PK · MO Pardubice V",               day: "Den 2 — Pátek",    dayA: "Pá 7. 8.",  dayB: "Pá 14. 8.", timeA: "8:00–10:00",  timeB: "8:00–10:00",  loc: "Srnojedy (u Pardubic)" },
-  { id: "kozel",    name: "Josef Kozel",           av: "K",  role: "Radní PK pro školství · Starosta Heřmanova Městce", day: "Den 2 — Pátek",    dayA: "Pá 7. 8.",  dayB: "Pá 14. 8.", timeA: "11:00–13:30", timeB: "11:00–13:30", loc: "Heřmanův Městec — dílny SŠ / hokejbalový stadion" },
-  { id: "krcil",    name: "Miroslav Krčil",        av: "Kr", role: "Radní PK · Starosta Hlinska",                      day: "Den 2 — Pátek",    dayA: "Pá 7. 8.",  dayB: "Pá 14. 8.", timeA: "15:00–17:00", timeB: "15:00–17:00", loc: "Hlinsko — radnice, venkovní prostředí" },
-  { id: "fiala",    name: "Petr Fiala",            av: "F",  role: "Senátor · Starosta Letohradu · Předseda hnutí MY", day: "Den 3 — Sobota",   dayA: "So 8. 8.",  dayB: "So 15. 8.", timeA: "9:00–11:30",  timeB: "9:00–11:30",  loc: "Letohrad — náměstí, sportoviště" },
-  { id: "stransky", name: "Ing. Jan Stránský",     av: "S",  role: "Starosta Přívratu · Ředitel rostlinné výroby",     day: "Den 3 — Sobota",   dayA: "So 8. 8.",  dayB: "So 15. 8.", timeA: "13:00–15:30", timeB: "13:00–15:30", loc: "Přívrat — obecní úřad, hřiště, pole" },
+  { id: "hajek",    name: "MUDr. Josef Hájek",    av: "H",  role: "Primář ORL · Zastupitel PK",                        day: "Den 1 — Středa",   dayA: "St 5. 8.",  dayB: "St 12. 8.", timeA: "12:00–14:30", timeB: "12:00–14:30", loc: "Orlickoústecká nemocnice, Ústí nad Orlicí" },
+  { id: "mencak",   name: "Mgr. Jiří Mencák",     av: "M",  role: "Starosta Žamberka · Zastupitel PK",                 day: "Den 1 — Středa",   dayA: "St 5. 8.",  dayB: "St 12. 8.", timeA: "15:00–17:30", timeB: "15:00–17:30", loc: "Žamberk — radnice + příroda" },
+  { id: "bartak",   name: "Dominik Barták",        av: "B",  role: "Tiskový mluvčí PK · MO Pardubice V",               day: "Den 2 — Čtvrtek",  dayA: "Čt 6. 8.",  dayB: "Čt 13. 8.", timeA: "8:00–10:00",  timeB: "8:00–10:00",  loc: "Srnojedy (u Pardubic)" },
+  { id: "kozel",    name: "Josef Kozel",           av: "K",  role: "Radní PK pro školství · Starosta Heřmanova Městce", day: "Den 2 — Čtvrtek",  dayA: "Čt 6. 8.",  dayB: "Čt 13. 8.", timeA: "11:00–13:30", timeB: "11:00–13:30", loc: "Heřmanův Městec — dílny SŠ / hokejbalový stadion" },
+  { id: "krcil",    name: "Miroslav Krčil",        av: "Kr", role: "Radní PK · Starosta Hlinska",                      day: "Den 2 — Čtvrtek",  dayA: "Čt 6. 8.",  dayB: "Čt 13. 8.", timeA: "15:00–17:00", timeB: "15:00–17:00", loc: "Hlinsko — radnice, venkovní prostředí" },
+  { id: "fiala",    name: "Petr Fiala",            av: "F",  role: "Senátor · Starosta Letohradu · Předseda hnutí MY", day: "Den 3 — Pátek",    dayA: "Pá 7. 8.",  dayB: "Pá 14. 8.", timeA: "9:00–11:30",  timeB: "9:00–11:30",  loc: "Letohrad — náměstí, sportoviště" },
+  { id: "stransky", name: "Ing. Jan Stránský",     av: "S",  role: "Starosta Přívratu · Ředitel rostlinné výroby",     day: "Den 3 — Pátek",    dayA: "Pá 7. 8.",  dayB: "Pá 14. 8.", timeA: "13:00–15:30", timeB: "13:00–15:30", loc: "Přívrat — obecní úřad, hřiště, pole" },
 ];
 
 const LABELS = { A: "★ Var. A", B: "Var. B", oba: "Obě", ne: "Nedostupný/á" };
