@@ -4,6 +4,11 @@
   "bartak": null,
   "kozel": null,
   "krcil": null,
-  "fiala": null,
+  "fiala": {
+    "choice": "ne",
+    "name": "Petr Fiala",
+    "note": "Mohu pátek 7. a pátek 14.8. vždy dopoledne. Nicméně nějak mi ty termíny nesedí..",
+    "ts": "2026-07-27T19:19:53.196Z"
+  },
   "stransky": null
 }
