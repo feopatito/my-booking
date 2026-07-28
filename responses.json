@@ -2,7 +2,12 @@
   "hajek": null,
   "mencak": null,
   "bartak": null,
-  "kozel": null,
+  "kozel": {
+    "choice": "A",
+    "name": "Josef Kozel",
+    "note": "",
+    "ts": "2026-07-28T07:55:12.469Z"
+  },
   "krcil": null,
   "fiala": {
     "choice": "oba",
