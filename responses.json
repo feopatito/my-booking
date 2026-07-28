@@ -18,7 +18,12 @@
     "note": "",
     "ts": "2026-07-28T07:55:12.469Z"
   },
-  "krcil": null,
+  "krcil": {
+    "choice": "A",
+    "name": "Miroslav Krčil",
+    "note": "",
+    "ts": "2026-07-28T11:38:56.688Z"
+  },
   "fiala": {
     "choice": "oba",
     "name": "Petr Fiala",
