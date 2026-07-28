@@ -1,5 +1,10 @@
 {
-  "hajek": null,
+  "hajek": {
+    "choice": "ne",
+    "name": "Josef Hájek",
+    "note": "",
+    "ts": "2026-07-28T07:56:27.416Z"
+  },
   "mencak": null,
   "bartak": null,
   "kozel": {
