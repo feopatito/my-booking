@@ -5,7 +5,12 @@
     "note": "",
     "ts": "2026-07-28T07:56:27.416Z"
   },
-  "mencak": null,
+  "mencak": {
+    "choice": "A",
+    "name": "Jirka Mencák",
+    "note": "",
+    "ts": "2026-07-31T09:19:52.202Z"
+  },
   "bartak": {
     "choice": "A",
     "name": "Dominik Barták",
